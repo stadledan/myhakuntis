@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="myHAKWels">
+<meta name="theme-color" content="#0f1115">
+<title>myHAKWels</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#e98a1f;--orange-dark:#d2770f;
+    --hak-orange:#e98a1f;--hak-blau:#2868A6;--hak-rot:#B72651;--hak-grau:#4E4E4E;
+    --bg:#f3f4f7;--card:#fff;--ink:#1b1d23;--ink-soft:#6b7280;--ink-faint:#9aa0ab;
+    --line:#e8eaef;--shadow:0 1px 3px rgba(20,23,40,.06),0 6px 20px rgba(20,23,40,.05);
+    --c-amber:#f0920f;--c-amber-bg:#fdf3e3;--c-violet:#8e5bd9;--c-violet-bg:#f3edfc;
+    --c-lime:#8db70f;--c-lime-bg:#f2f7df;--c-blue:#2b91d6;--c-blue-bg:#e7f3fc;
+    --c-teal:#14a89a;--c-teal-bg:#e0f5f2;--c-rose:#e8536b;--c-rose-bg:#fdeaee;
+    --c-slate:#7c8696;--c-slate-bg:#eef0f3;
+    --tile-orange:#f2a024;--tile-ink:#3a2812;--tile-creme:#eeeabd;--tile-creme-ink:#3a3320;--tile-cancel:#e4e6ea;--cancel-line:#b3b7c0;--tile-lila:#a781b5;--tile-lila-ink:#2c1d31;--tile-test:#fff8de;--tile-test-ink:#4a3d12;--tile-test-dot:#ffd72a;
+  }
+  [data-theme="dark"]{
+    --bg:#000000;--card:#1c1c1e;--ink:#f2f2f7;--ink-soft:#a8a8b0;--ink-faint:#68686f;
+    --line:#2c2c2e;--shadow:0 1px 3px rgba(0,0,0,.5),0 6px 20px rgba(0,0,0,.4);
+    --tile-cancel:#2c2c2e;--cancel-line:#55555d;
+    --c-amber-bg:#3a2c16;--c-violet-bg:#2c2340;--c-lime-bg:#2a3116;--c-blue-bg:#15314a;--c-teal-bg:#123e38;--c-rose-bg:#3e2028;
+  }
+  [data-theme="dark"] .screen{background:radial-gradient(1200px 480px at 50% -10%,#2a1c0c 0%,transparent 62%),var(--bg)}
+  [data-theme="dark"] .code-box{background:#0a0c10}
+  [data-theme="dark"] .helpbox,[data-theme="dark"] .tmap-row{background:#161618}
+  [data-theme="dark"] .field input,[data-theme="dark"] .tmap-add input{background:#161618}
+  [data-theme="dark"] .icon-btn,[data-theme="dark"] .seg,[data-theme="dark"] .daychip{background:#1c1c1e}
+  [data-theme="dark"] .seg button.on{background:#3a3a3c}
+  [data-theme="dark"] .freegap::before,[data-theme="dark"] .freegap::after{background:var(--line)}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","Segoe UI",system-ui,Roboto,sans-serif;background:var(--bg);color:var(--ink);min-height:100%;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+  body{padding-bottom:env(safe-area-inset-bottom)}
+  .hidden{display:none!important}
+  .brand{text-align:center;margin-bottom:24px}
+  .brand .mark{width:60px;height:60px;margin:0 auto 14px;border-radius:17px;background:linear-gradient(145deg,#ff8a2b,#ff5e00);display:grid;place-items:center;box-shadow:0 8px 22px rgba(255,106,0,.32)}
+  .brand .mark svg{width:32px;height:32px;fill:#fff}
+  .brand h1{font-size:24px;font-weight:800;letter-spacing:-.5px}
+  .brand p{font-size:14px;color:var(--ink-soft);margin-top:3px;font-weight:500}
+  .screen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:30px 22px calc(34px + env(safe-area-inset-bottom));background:radial-gradient(1200px 480px at 50% -10%,#fff4ea 0%,transparent 60%),var(--bg)}
+  .panel{background:var(--card);border-radius:22px;padding:24px 20px;box-shadow:var(--shadow);max-width:460px;width:100%;margin:0 auto}
+  .setup-intro{font-size:14px;color:var(--ink-soft);line-height:1.55;text-align:center;margin-bottom:22px;max-width:440px;margin-left:auto;margin-right:auto}
+  .step{display:flex;gap:14px;margin-bottom:18px}
+  .step .no{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+  .step .txt{font-size:14px;line-height:1.5;padding-top:3px;color:var(--ink)}
+  .step .txt b{font-weight:700}
+  .step .txt a{color:var(--orange);font-weight:700;text-decoration:none}
+  .step .txt .sub{color:var(--ink-soft);font-size:13px;margin-top:3px}
+  .code-box{position:relative;background:#1b1f27;border-radius:14px;margin:6px 0 4px;overflow:hidden}
+  .code-box pre{padding:14px;font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:11px;line-height:1.5;color:#d6dbe3;max-height:140px;overflow:auto;white-space:pre;-webkit-overflow-scrolling:touch}
+  .copy-btn{position:absolute;top:10px;right:10px;background:#ff6a00;color:#fff;border:none;border-radius:9px;padding:7px 13px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(255,106,0,.4)}
+  .copy-btn.done{background:#22a06b}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;font-weight:700;color:var(--ink-soft);margin-bottom:7px}
+  .field input{width:100%;padding:14px 16px;font-size:16px;border:1.5px solid var(--line);border-radius:14px;background:#fafbfc;color:var(--ink);outline:none;font-family:inherit;font-weight:500;transition:border-color .15s,box-shadow .15s}
+  .field input:focus{border-color:var(--orange);background:#fff;box-shadow:0 0 0 4px rgba(255,106,0,.1)}
+  .field .hint{font-size:12px;color:var(--ink-faint);margin-top:6px;line-height:1.45}
+  .btn{width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .12s,background .15s}
+  .btn-primary{background:var(--orange);color:#fff;box-shadow:0 6px 16px rgba(255,106,0,.28)}
+  .btn-primary:active{transform:scale(.985)}
+  .btn-primary:disabled{background:#cfd3da;box-shadow:none}
+  .msg{margin-top:14px;padding:13px 15px;border-radius:13px;font-size:13.5px;font-weight:500;line-height:1.45;display:none}
+  .msg.err{background:#fdecec;color:#c0392b;border:1px solid #f8d3d3;display:block}
+  .msg.info{background:#eaf3fb;color:#1f6aa6;border:1px solid #d3e6f5;display:block}
+  .msg.ok{background:#e7f6ee;color:#1c7a4d;border:1px solid #c5ebd5;display:block}
+  .secure{margin-top:16px;font-size:12px;color:var(--ink-faint);text-align:center;line-height:1.5;display:flex;align-items:center;justify-content:center;gap:6px}
+  .secure svg{width:13px;height:13px;fill:var(--ink-faint);flex-shrink:0}
+  .checkrow{display:flex;align-items:center;gap:10px;margin:4px 0 6px;cursor:pointer;user-select:none}
+  .checkrow input{width:19px;height:19px;accent-color:var(--orange)}
+  .checkrow label{font-size:13.5px;color:var(--ink-soft);font-weight:500;cursor:pointer}
+  .link-row{text-align:center;margin-top:10px}
+  .link-row a{font-size:13px;color:var(--ink-faint);text-decoration:none;font-weight:600}
+  .helpbox{background:#f6f7f9;border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-bottom:16px}
+  .helpbox h4{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+  .helpbox h4 svg{width:16px;height:16px;fill:var(--orange)}
+  .helpbox ol{margin:0 0 0 18px;padding:0}
+  .helpbox li{font-size:13px;line-height:1.55;color:var(--ink-soft);margin-bottom:4px}
+  .helpbox li b{color:var(--ink);font-weight:700}
+  #app{display:none;flex-direction:column;min-height:100vh;min-height:100dvh}
+  .appbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 12px) 13px 11px}
+  .appbar-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:13px}
+  .appbar-title{display:flex;align-items:baseline;gap:7px;flex-shrink:1;min-width:0}
+  .appbar-title .klass{font-size:19px;font-weight:800;letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .appbar-title .kw{font-size:13px;font-weight:600;color:var(--ink-faint)}
+  .icon-btn{width:35px;height:35px;flex-shrink:0;border-radius:10px;border:none;background:#f1f2f5;color:var(--ink-soft);cursor:pointer;display:grid;place-items:center;transition:background .14s}
+  .icon-btn:active{background:#e4e6ea}
+  .icon-btn svg{width:19px;height:19px}
+  .seg{display:inline-flex;background:#eef0f3;border-radius:11px;padding:3px}
+  .seg button{border:none;background:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--ink-soft);padding:6px 12px;border-radius:8px;cursor:pointer;transition:all .15s}
+  .seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .daystrip{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+  .daystrip::-webkit-scrollbar{display:none}
+  .daychip{flex:1 0 auto;min-width:58px;text-align:center;padding:9px 4px;border-radius:14px;cursor:pointer;background:#f1f2f5;border:1.5px solid transparent;transition:all .15s}
+  .daychip .dn{font-size:11px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.4px}
+  .daychip .dd{font-size:19px;font-weight:800;color:var(--ink);margin-top:2px;line-height:1}
+  .daychip.on{background:var(--orange);border-color:var(--orange)}
+  .daychip.on .dn,.daychip.on .dd{color:#fff}
+  .daychip.today:not(.on){border-color:var(--orange)}
+  .daychip.today:not(.on) .dd{color:var(--orange)}
+  .scroll{flex:1;overflow-y:auto;padding:18px 16px 40px}
+  .lessons{display:flex;flex-direction:column;gap:11px;max-width:560px;margin:0 auto}
+  .card{position:relative;background:var(--card);border-radius:18px;padding:15px 16px 15px 18px;box-shadow:var(--shadow);display:flex;align-items:stretch;gap:14px;overflow:hidden;animation:rise .35s cubic-bezier(.2,.7,.3,1) backwards}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}}
+  .card .bar{position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:5px 0 0 5px}
+  .card .time{flex-shrink:0;width:52px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+  .card .time .num{font-size:17px;font-weight:800;line-height:1}
+  .card .time .se{font-size:11px;font-weight:600;color:var(--ink-faint);margin-top:5px}
+  .card .time .ee{font-size:11px;font-weight:500;color:var(--ink-faint);margin-top:2px}
+  .card .vline{width:1px;background:var(--line);flex-shrink:0}
+  .card .body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+  .card .subj{font-size:17px;font-weight:800;letter-spacing:-.2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .card .meta{font-size:13.5px;color:var(--ink-soft);margin-top:4px;font-weight:500;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .card .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-faint)}
+  .card .room-ic,.card .teacher-ic{display:inline-flex;align-items:center;gap:4px}
+  .card .meta svg{width:13px;height:13px;fill:var(--ink-faint)}
+  .badge{font-size:10.5px;font-weight:800;letter-spacing:.3px;padding:3px 8px;border-radius:7px;text-transform:uppercase}
+  .badge.cancel{background:var(--c-rose-bg);color:var(--c-rose)}
+  .badge.subst{background:var(--c-violet-bg);color:var(--c-violet)}
+  .badge.room{background:var(--c-amber-bg);color:var(--c-amber)}
+  .badge.exam{background:#fde8ef;color:#d6336c}
+  .badge.moved{background:var(--c-violet-bg);color:var(--c-violet)}
+  .badge.add{background:var(--c-lime-bg);color:#5d8a08}
+  .badge.tausch{background:var(--c-blue-bg);color:var(--c-blue)}
+  [data-theme="dark"] .badge.add{color:#a5c93a}
+  .card .badge{text-decoration:none!important}
+  .card.is-subst{box-shadow:0 0 0 1.5px var(--tile-lila),var(--shadow)}
+  .card.is-subst .bar{background:var(--tile-lila)}
+  .card.is-exam{background:var(--tile-test)!important;color:#4a3d12}
+  .card.is-exam .subj,.card.is-exam .meta,.card.is-exam .num,.card.is-exam .se,.card.is-exam .ee{color:#4a3d12!important}
+  .card.is-exam .lstext{color:#6b5a1e!important}
+  .card.is-exam .bar{background:#f0d878!important}
+  .card.is-exam::after{content:'';position:absolute;top:13px;right:14px;width:11px;height:11px;border-radius:50%;background:var(--tile-test-dot)}
+  .card .lstext{font-style:italic;opacity:.85;margin-top:5px}
+  .info-i{position:absolute;bottom:11px;right:12px;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink-faint);background:transparent;color:var(--ink-soft);font-size:13px;font-weight:700;font-style:italic;font-family:Georgia,serif;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+  .info-i:active{background:var(--line)}
+  .card.is-exam .info-i{border-color:#b09530;color:#6b5a1e}
+  .badge.hw{background:var(--c-teal-bg);color:var(--c-teal)}
+  .card.is-cancel .subj,.card.is-cancel .meta{text-decoration:line-through;color:var(--ink-faint)}
+  .card.is-cancel{background:#f7f8fa;box-shadow:none;border:1px dashed #dde0e6}
+  .card.is-cancel .bar{background:var(--c-slate)!important;opacity:.5}
+  .card.now{box-shadow:0 0 0 2px var(--orange),0 10px 26px rgba(255,106,0,.20)}
+  .badge.now{background:var(--orange);color:#fff}
+  .strike-old{text-decoration:line-through;color:var(--ink-faint)}
+  .freegap{text-align:center;padding:8px;font-size:12px;font-weight:600;color:var(--ink-faint);display:flex;align-items:center;gap:10px;max-width:560px;margin:0 auto}
+  .freegap::before,.freegap::after{content:'';flex:1;height:1px;background:var(--line)}
+  .col-amber .bar{background:var(--c-amber)}.col-amber{--tint:var(--c-amber-bg)}
+  .col-violet .bar{background:var(--c-violet)}.col-violet{--tint:var(--c-violet-bg)}
+  .col-lime .bar{background:var(--c-lime)}.col-lime{--tint:var(--c-lime-bg)}
+  .col-blue .bar{background:var(--c-blue)}.col-blue{--tint:var(--c-blue-bg)}
+  .col-teal .bar{background:var(--c-teal)}.col-teal{--tint:var(--c-teal-bg)}
+  .col-rose .bar{background:var(--c-rose)}.col-rose{--tint:var(--c-rose-bg)}
+  .col-slate .bar{background:var(--c-slate)}.col-slate{--tint:var(--c-slate-bg)}
+  .weekwrap{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 28px;background:var(--bg)}
+  .wgrid{display:grid;width:100%;padding:0 4px 6px}
+  .wg-corner{position:sticky;top:0;z-index:6;background:var(--bg)}
+  .wg-dh{position:sticky;top:0;z-index:6;background:var(--bg);text-align:center;padding:9px 2px 9px}
+  .wg-dh .mo{font-size:10px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.6px;height:13px}
+  .wg-dh .dd{font-size:20px;font-weight:300;color:var(--ink);line-height:1.15}
+  .wg-dh .dn{font-size:11px;color:var(--ink-faint)}
+  .wg-dh.today .dd{color:var(--orange);font-weight:600}
+  .wg-tc{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-faint)}
+  .wg-tc .ts{font-size:9.5px;font-weight:500}
+  .wg-tc .tn{font-size:15px;font-weight:700;color:var(--ink-soft);margin:1px 0}
+  .wg-tc .te{font-size:9.5px;font-weight:500}
+  .wcell{padding:2px}
+  .wcell.split{display:flex;gap:2px}
+  .wcell.split .wtile{padding:3px 1px}
+  .wcell.split .wtile .wk{display:none}
+  .wcell.split .wtile .wf{font-size:11.5px}
+  .wcell.split .wtile .wte,.wcell.split .wtile .wr,.wcell.split .wtile .wk{font-size:10px;margin-top:1px}
+  .wtile{flex:1;height:100%;min-height:40px;border-radius:7px;padding:4px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--tile-orange);color:var(--tile-ink);overflow:hidden;line-height:1.18;min-width:0}
+  .wtile .wf{font-size:13.5px;font-weight:600;letter-spacing:-.1px}
+  .wtile .wte{font-size:12.5px;font-weight:400;margin-top:2px}
+  .wtile .wr{font-size:12.5px;font-weight:400;margin-top:2px;opacity:.95}
+  .wtile .wk{font-size:12px;font-weight:400;margin-top:2px;opacity:.8}
+  .wtile.creme{background:var(--tile-creme);color:var(--tile-creme-ink)}
+  .wtile.cancel{background:var(--tile-cancel);color:var(--ink-faint);position:relative;overflow:hidden}
+  .wtile.cancel .wf,.wtile.cancel .wte,.wtile.cancel .wr,.wtile.cancel .wk{text-decoration:none;position:relative;z-index:1}
+  .wtile.cancel::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to bottom right,transparent calc(50% - .75px),var(--cancel-line) calc(50% - .75px),var(--cancel-line) calc(50% + .75px),transparent calc(50% + .75px))}
+  .wholiday{background:var(--c-blue-bg);color:var(--c-blue);border-radius:8px;height:100%;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:700;letter-spacing:.3px;margin:2px}
+  #load{display:none;padding:70px 20px;text-align:center;color:var(--ink-soft)}
+  .spin{width:34px;height:34px;border:3px solid #e8eaef;border-top-color:var(--orange);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 16px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .empty{text-align:center;padding:60px 24px;color:var(--ink-soft);max-width:480px;margin:0 auto}
+  .empty .ei{width:64px;height:64px;border-radius:18px;background:#eef0f3;display:grid;place-items:center;margin:0 auto 16px}
+  .empty .ei svg{width:30px;height:30px;fill:var(--ink-faint)}
+  .empty h3{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--ink)}
+  .empty p{font-size:14px;line-height:1.5}
+  .legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;padding:6px 16px 0;max-width:560px;margin:0 auto}
+  .legend span{font-size:11px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:5px}
+  .legend i{width:9px;height:9px;border-radius:3px}
+
+  .overlay{position:fixed;inset:0;background:rgba(15,17,21,.5);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+  .overlay.open{display:flex}
+  .sheet{background:var(--card);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:22px 20px calc(26px + env(safe-area-inset-bottom));max-height:86vh;overflow-y:auto;animation:sheetUp .28s cubic-bezier(.2,.7,.3,1)}
+  @keyframes sheetUp{from{transform:translateY(100%)}}
+  @media(min-width:600px){.overlay{align-items:center}.sheet{border-radius:24px;max-height:80vh}}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .sheet-head h2{font-size:19px;font-weight:800;letter-spacing:-.3px}
+  .sheet-sec{margin-bottom:24px}
+  .sheet-sec h3{font-size:12px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+  .swatches{display:flex;gap:12px;flex-wrap:wrap}
+  .swatch{width:40px;height:40px;border-radius:13px;cursor:pointer;border:3px solid transparent;transition:transform .12s}
+  .swatch:active{transform:scale(.9)}
+  .swatch.sel{box-shadow:0 0 0 3px var(--card),0 0 0 5px var(--ink)}
+  .tmap-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+  .tmap-row{display:flex;align-items:center;gap:10px;background:#f6f7f9;border-radius:11px;padding:9px 12px}
+  .tmap-row .code{font-weight:800;font-size:13px;min-width:50px}
+  .tmap-row .nm{flex:1;font-size:13.5px;color:var(--ink-soft)}
+  .tmap-row .del{background:none;border:none;cursor:pointer;font-size:16px;padding:0 4px;opacity:.6}
+  .tmap-row .del:active{opacity:1}
+  .tmap-add{display:flex;gap:8px}
+  .tmap-add input{padding:12px;border:1.5px solid var(--line);border-radius:11px;font-size:15px;font-family:inherit;outline:none;background:#fafbfc;min-width:0}
+  .tmap-add input:focus{border-color:var(--orange);background:#fff}
+  .tmap-add input.code-in{flex:0 0 90px;text-transform:uppercase;font-weight:700}
+  .tmap-add input.name-in{flex:1}
+  .tmap-add button{flex:0 0 auto;width:46px;background:var(--orange);color:#fff;border:none;border-radius:11px;font-weight:700;font-size:20px;font-family:inherit;cursor:pointer}
+  .sheet-note{font-size:12px;color:var(--ink-faint);margin-top:9px;line-height:1.5}
+  .name-field{width:100%;padding:13px 15px;font-size:16px;border:1.5px solid var(--line);border-radius:13px;background:#fafbfc;color:var(--ink);outline:none;font-family:inherit;font-weight:500;transition:border-color .15s}
+  .name-field:focus{border-color:var(--orange)}
+  [data-theme="dark"] .name-field{background:#161618}
+
+  /* Wochen-Kacheln: mehr Luft + Änderungs-Markierung */
+  .wtile{padding:5px 3px!important;line-height:1.26!important}
+  .wtile .wte,.wtile .wr,.wtile .wk{margin-top:1px!important;white-space:normal;word-break:break-word}
+  .wte.chg,.wr.chg{font-weight:800;border:0!important;padding:0!important;display:block!important}
+  .wtile s{font-weight:400;opacity:.6;font-size:.86em;margin-left:3px;text-decoration:line-through}
+  .wtile.subst{background:var(--tile-lila)!important;color:var(--tile-lila-ink)!important}
+  .wtile.added{background:#c9e85c!important;color:#1f2a00!important}
+  [data-theme="dark"] .wtile.added{background:#b7dc3f!important;color:#1f2a00!important}
+  .wtile.exam{background:var(--tile-test)!important;color:var(--tile-test-ink)!important;position:relative}
+  .wtile.exam::after{content:'';position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--tile-test-dot)}
+  .wte.chg,.wr.chg{font-weight:800}
+  /* Schriftgrößen */
+  [data-fs="large"] .wtile .wf{font-size:14px}
+  [data-fs="large"] .wtile .wte,[data-fs="large"] .wtile .wr{font-size:14.5px}
+  [data-fs="large"] .wtile .wk{font-size:14px}
+  [data-fs="large"] .wg-tc .tn{font-size:18px}
+  [data-fs="large"] .card .subj{font-size:19px}
+  [data-fs="large"] .card .meta{font-size:15px}
+  [data-fs="small"] .wtile .wf{font-size:12px}
+  [data-fs="small"] .wtile .wte,[data-fs="small"] .wtile .wr{font-size:11px}
+  [data-fs="small"] .wtile .wk{font-size:10.5px}
+  [data-fs="small"] .card .subj{font-size:15.5px}
+  [data-fs="small"] .card .meta{font-size:13px}
+  /* iOS-Schalter */
+  .swrow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+  .swrow:last-child{border-bottom:none}
+  .swrow .lbl{font-size:15px;color:var(--ink)}
+  .sw{position:relative;width:50px;height:30px;flex:0 0 auto}
+  .sw input{opacity:0;width:0;height:0;position:absolute}
+  .sw .track{position:absolute;inset:0;background:#c8ccd2;border-radius:15px;transition:.2s;cursor:pointer}
+  .sw .track::before{content:'';position:absolute;width:26px;height:26px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+  .sw input:checked+.track{background:#34c759}
+  .sw input:checked+.track::before{transform:translateX(20px)}
+  [data-theme="dark"] .sw .track{background:#39393d}
+
+  /* ============ TAB-SHELL ============ */
+  #app{display:none;flex-direction:column;height:100vh;height:100dvh;position:relative;overflow:hidden}
+  .tabview{display:none;flex-direction:column;height:100%;overflow:hidden}
+  .tabview.on{display:flex}
+  .tab-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 16px calc(82px + env(safe-area-inset-bottom));max-width:620px;margin:0 auto;width:100%}
+  /* scroll-Container der Plan-Ansicht über der Tab-Bar freihalten */
+  #tab-plan .scroll{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+  #tab-plan .weekwrap{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:120;display:flex;background:rgba(248,249,251,.94);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--line);padding:8px 6px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  [data-theme="dark"] .tabbar{background:rgba(18,18,20,.9)}
+  .tabbtn{position:relative;flex:1;background:none;border:none;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 2px;color:var(--ink-faint);transition:color .15s}
+  .tabbtn svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .tabbtn .tl{font-size:10.5px;font-weight:600;letter-spacing:.1px}
+  .tabbtn.on{color:var(--orange)}
+  .tabbtn.on svg{fill:color-mix(in srgb,var(--orange) 16%,transparent)}
+  .tabbtn .nb{position:absolute;top:1px;left:50%;margin-left:5px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--hak-rot);color:#fff;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;line-height:1}
+  .tabbtn .nb.show{display:flex}
+
+  /* ============ HEADER (Dashboard + Sub) ============ */
+  .topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(env(safe-area-inset-top) + 14px) 16px 12px;background:linear-gradient(var(--bg),var(--bg) 70%,transparent);max-width:620px;margin:0 auto;width:100%}
+  .topbar .logo{height:30px;width:auto;display:block}
+  .topbar .ttl{font-size:21px;font-weight:800;letter-spacing:-.5px}
+  .topbar .acts{display:flex;gap:8px;align-items:center}
+
+  /* ============ DASHBOARD ============ */
+  .hero{padding:6px 2px 18px}
+  .hero .hi{font-size:26px;font-weight:800;letter-spacing:-.7px;line-height:1.12}
+  .hero .sub{font-size:14px;color:var(--ink-soft);margin-top:5px;font-weight:500}
+  .dcard{background:var(--card);border-radius:20px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;animation:rise .4s cubic-bezier(.2,.7,.3,1) backwards}
+  .dcard-h{display:flex;align-items:center;gap:9px;padding:15px 17px 11px}
+  .dcard-h .ti{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-soft)}
+  .dcard-h .ic{width:22px;height:22px;display:grid;place-items:center}
+  .dcard-h .ic svg{width:18px;height:18px;fill:var(--orange)}
+  .dcard-h .more{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--orange);text-decoration:none;background:none;border:none;cursor:pointer;font-family:inherit}
+  .dcard-b{padding:0 17px 16px}
+
+  /* "Jetzt"-Karte */
+  .nowcard{position:relative;border-radius:20px;padding:17px 18px;color:#fff;overflow:hidden;margin-bottom:14px;box-shadow:0 10px 24px rgba(0,0,0,.16);animation:rise .4s cubic-bezier(.2,.7,.3,1) backwards;background:linear-gradient(150deg,#5b6472,#3a4150)}
+  .nowcard::after{content:"";position:absolute;inset:0;background:linear-gradient(150deg,rgba(255,255,255,.18),transparent 60%);pointer-events:none}
+  .nowcard .lab{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;opacity:.95}
+  .nowcard .cd{flex:0 0 auto;background:rgba(255,255,255,.24);font-size:11px;font-weight:800;padding:3px 9px;border-radius:8px;letter-spacing:.2px;text-transform:none;opacity:1}
+  .nowcard .sj{font-size:25px;font-weight:800;letter-spacing:-.5px;margin-top:6px;line-height:1.1}
+  .nowcard .mt{font-size:14px;font-weight:500;opacity:.94;margin-top:7px;display:flex;flex-wrap:wrap;gap:5px 12px}
+  .nowcard .mt b{font-weight:700}
+  .nowcard .chips{margin-top:11px;display:flex;flex-wrap:wrap;gap:7px}
+  .nowcard .chip{background:rgba(255,255,255,.22);backdrop-filter:blur(4px);font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
+  .nowcard.free{background:linear-gradient(150deg,#4a5568,#2d3748)}
+  .nowcard.done{background:linear-gradient(150deg,#2f9e6f,#1f7a52)}
+
+  /* Änderungs-Liste */
+  .dcard .chg{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+  .dcard .chg:first-child{border-top:none}
+  .dcard .chg .tag{flex:0 0 auto;width:80px;text-align:center;font-size:9.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;padding:5px 4px;border-radius:8px;line-height:1.15;white-space:nowrap}
+  .dcard .tag.entfall{background:var(--c-rose-bg);color:var(--c-rose)}
+  .tag.verlegt{background:var(--c-violet-bg);color:var(--c-violet)}
+  .tag.vertret{background:var(--c-violet-bg);color:var(--c-violet)}
+  .tag.raum{background:var(--c-amber-bg);color:var(--c-amber)}
+  .tag.test{background:#fde8ef;color:#d6336c}
+  .tag.tausch{background:var(--c-blue-bg);color:var(--c-blue)}
+  .tag.zusatz{background:var(--c-lime-bg);color:#5d8a08}
+  [data-theme="dark"] .tag.zusatz{color:#a5c93a}
+  .dcard .chg .info{flex:1;min-width:0}
+  .dcard .chg .sj{font-size:15.5px;font-weight:750;letter-spacing:-.2px}
+  .dcard .chg .dt{font-size:13px;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+  .dcard .chg .dt .old{text-decoration:line-through;opacity:.7}
+  .dcard .chg .when{font-size:12px;color:var(--ink-faint);margin-top:3px;font-weight:600}
+  .all-ok{text-align:center;padding:14px 10px 18px}
+  .all-ok .em{width:52px;height:52px;border-radius:50%;background:var(--c-teal-bg);display:grid;place-items:center;margin:0 auto 10px}
+  .all-ok .em svg{width:28px;height:28px;fill:var(--c-teal)}
+  .all-ok p{font-size:14px;color:var(--ink-soft);font-weight:500;line-height:1.45}
+
+  /* Mini-Tagesplan im Dashboard */
+  .mini-l{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+  .mini-l:first-child{border-top:none}
+  .mini-l .pn{flex:0 0 30px;text-align:center;font-size:14px;font-weight:800;color:var(--ink-faint)}
+  .mini-l .bar{flex:0 0 4px;align-self:stretch;border-radius:3px;background:var(--c-amber)}
+  .mini-l .mc{flex:1;min-width:0}
+  .mini-l .ms{font-size:15px;font-weight:700;letter-spacing:-.2px}
+  .mini-l .mm{font-size:12.5px;color:var(--ink-soft);margin-top:1px}
+  .mini-l.cx .ms{text-decoration:line-through;color:var(--ink-faint)}
+  .mini-l .tm{flex:0 0 auto;font-size:12px;color:var(--ink-faint);font-weight:600}
+
+  /* ============ HAUSÜBUNGEN / ABWESENHEITEN ============ */
+  .sub-h1{font-size:28px;font-weight:800;letter-spacing:-.7px;padding:4px 2px 16px}
+  .hwcard{display:flex;gap:13px;background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:15px 16px;margin-bottom:12px;align-items:flex-start;animation:rise .4s cubic-bezier(.2,.7,.3,1) backwards}
+  .hwcard .acc{flex:0 0 4px;align-self:stretch;border-radius:3px;min-height:38px}
+  .hwcard .hb{flex:1;min-width:0}
+  .hwcard .hs{font-size:16px;font-weight:750;letter-spacing:-.2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .hwcard .ht{font-size:14px;color:var(--ink-soft);margin-top:5px;line-height:1.5;white-space:pre-line}
+  .hwcard .hd{font-size:12px;color:var(--ink-faint);margin-top:6px;font-weight:600}
+  .pill{font-size:10px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;padding:3px 8px;border-radius:7px;background:var(--c-teal-bg);color:var(--c-teal)}
+  .pill.exam{background:#fde8ef;color:#d6336c}
+
+  .abscard{display:flex;gap:13px;background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:14px 16px;margin-bottom:11px;align-items:flex-start;animation:rise .4s cubic-bezier(.2,.7,.3,1) backwards}
+  .abscard .ad{flex:0 0 52px;text-align:center}
+  .abscard .ad .d{font-size:20px;font-weight:800;line-height:1}
+  .abscard .ad .mo{font-size:11px;color:var(--ink-faint);font-weight:700;text-transform:uppercase;margin-top:2px}
+  .abscard .ab{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:13px}
+  .abscard .at{font-size:15px;font-weight:700}
+  .abscard .am{font-size:13px;color:var(--ink-soft);margin-top:3px}
+  .abscard .stt{display:inline-block;margin-top:6px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;padding:3px 9px;border-radius:7px}
+  .stt.ok{background:var(--c-teal-bg);color:var(--c-teal)}
+  .stt.open{background:var(--c-rose-bg);color:var(--c-rose)}
+
+  /* Hinweis-/Status-Box in Tabs */
+  .infobox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-top:4px}
+  .infobox .ii{width:40px;height:40px;border-radius:12px;background:var(--c-blue-bg);display:grid;place-items:center;margin-bottom:12px}
+  .infobox .ii svg{width:22px;height:22px;fill:var(--c-blue)}
+  .infobox h3{font-size:16px;font-weight:750;margin-bottom:6px}
+  .infobox p{font-size:14px;color:var(--ink-soft);line-height:1.5}
+  .infobox a.lnk{display:inline-flex;align-items:center;gap:6px;margin-top:13px;font-size:14px;font-weight:700;color:var(--orange);text-decoration:none}
+  .infobox a.lnk svg{width:16px;height:16px;fill:currentColor}
+  .mini-spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--orange);border-radius:50%;animation:sp .7s linear infinite;margin:30px auto}
+  .refresh-btn.spinning svg{animation:sp .8s linear infinite}
+
+  .detail-sheet{background:var(--card);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:14px 20px calc(26px + env(safe-area-inset-bottom));max-height:82vh;overflow-y:auto;animation:sheetUp .28s cubic-bezier(.2,.7,.3,1)}
+  @media(min-width:600px){#detail .detail-sheet{border-radius:24px;max-height:80vh}}
+  .dhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .dsubj{font-size:23px;font-weight:800;letter-spacing:-.5px}
+  .dstat{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
+  .dstat.cancel{background:var(--c-rose-bg);color:var(--c-rose)}
+  .dstat.subst{background:var(--c-violet-bg);color:var(--c-violet)}
+  .dstat.tausch{background:var(--c-blue-bg);color:var(--c-blue)}
+  .dstat.add{background:var(--c-lime-bg);color:#5d8a08}
+  [data-theme="dark"] .dstat.add{color:#a5c93a}
+  .dstat.exam{background:var(--tile-test);color:#6b5a1e}
+  .drow{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .drow:last-child{border-bottom:none}
+  .dk{flex:0 0 90px;font-size:12.5px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.3px;padding-top:2px}
+  .dv{flex:1;font-size:15px;color:var(--ink);line-height:1.5}
+  /* ============ LEHRERPLAN ============ */
+  .lehrer-sheet{background:var(--card);width:100%;max-width:780px;border-radius:24px 24px 0 0;padding:18px 16px calc(16px + env(safe-area-inset-bottom));height:94vh;max-height:94vh;overflow:hidden;display:flex;flex-direction:column;animation:sheetUp .28s cubic-bezier(.2,.7,.3,1)}
+  @media(min-width:600px){.lehrer-sheet{border-radius:24px;height:90vh;max-height:90vh}}
+  .lh-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-shrink:0}
+  .lh-head h2{font-size:19px;font-weight:800;letter-spacing:-.4px;flex:1}
+  .lh-search{position:relative;flex-shrink:0;margin-bottom:10px}
+  .lh-search input{width:100%;padding:12px 14px 12px 40px;font-size:16px;border:1.5px solid var(--line);border-radius:13px;background:#fafbfc;color:var(--ink);outline:none;font-family:inherit;font-weight:500}
+  [data-theme="dark"] .lh-search input{background:#161618}
+  .lh-search input:focus{border-color:var(--orange)}
+  .lh-search .si{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:var(--ink-faint)}
+  .lh-list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;margin:0 -4px}
+  .lh-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;cursor:pointer;border-bottom:1px solid var(--line)}
+  .lh-item:active{background:var(--bg)}
+  .lh-item .ab{flex:0 0 auto;min-width:56px;text-align:center;font-size:13px;font-weight:800;color:var(--orange);background:color-mix(in srgb,var(--orange) 13%,transparent);padding:6px 8px;border-radius:8px}
+  .lh-item .nm{font-size:15px;font-weight:600;color:var(--ink)}
+  .lh-empty{text-align:center;color:var(--ink-faint);padding:34px 16px;font-size:14px;line-height:1.5}
+  .lh-detail{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+  .lh-dhead{display:flex;align-items:center;gap:9px;flex-shrink:0;margin-bottom:10px}
+  .lh-dhead .ab,.lh-head .ab{font-size:14px;font-weight:800;color:#fff;background:var(--hak-blau);padding:6px 10px;border-radius:9px;flex-shrink:0}
+  .lh-dhead .nm{font-size:16px;font-weight:750;color:var(--ink)}
+  .lh-nav{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-bottom:9px}
+  .lh-nav .rng{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--ink-soft)}
+  .lh-nav .tdy{font-size:12px;font-weight:700;color:var(--orange);background:none;border:none;cursor:pointer;font-family:inherit;padding:6px 8px}
+  .lh-today{flex-shrink:0;border-radius:13px;padding:11px 14px;margin-bottom:10px;font-size:14px;font-weight:600;line-height:1.4}
+  .lh-today.on{background:color-mix(in srgb,var(--c-teal) 15%,transparent);color:var(--ink)}
+  .lh-today.off{background:var(--bg);color:var(--ink-soft)}
+  .lh-today b{font-weight:800}
+  .excard{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:9px;align-items:flex-start}
+  .excard .cd{flex:0 0 auto;min-width:54px;text-align:center;border-radius:11px;padding:8px 6px;background:var(--tile-test);color:var(--tile-test-ink)}
+  .excard .cd b{display:block;font-size:19px;font-weight:800;letter-spacing:-.6px;line-height:1}
+  .excard .cd span{display:block;font-size:10px;font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+  .excard.sa .cd{background:#ffd72a;color:#3d3000}
+  .excard.past{opacity:.68}
+  .excard.past .cd{background:var(--bg);color:var(--ink-faint)}
+  .excard .bd{flex:1;min-width:0}
+  .excard .sj{font-size:16px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .excard .ty{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:3px 7px;border-radius:6px;background:var(--c-amber-bg);color:var(--c-amber)}
+  .excard.sa .ty{background:#fde8ef;color:#d6336c}
+  .excard .tx{font-size:13.5px;color:var(--ink);margin-top:3px;line-height:1.4}
+  .excard .mt{font-size:12.5px;color:var(--ink-soft);margin-top:5px;font-weight:500;display:flex;gap:6px;flex-wrap:wrap}
+  .excard .mt .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-faint);display:inline-block;align-self:center}
+  .exsec{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink-faint);margin:16px 2px 8px}
+  .lh-filters{display:flex;gap:6px;overflow-x:auto;flex-shrink:0;margin:0 -16px 10px;padding:0 16px 2px;scrollbar-width:none}
+  .lh-filters::-webkit-scrollbar{display:none}
+  .lh-filters button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:700;padding:7px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .lh-filters button.on{background:var(--orange);border-color:var(--orange);color:#fff}
+  .lh-sec{font-size:10.5px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--ink-faint);padding:12px 12px 4px}
+  .lh-item .st{flex:0 0 auto;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .lh-item .st.on{background:color-mix(in srgb,var(--c-teal) 18%,transparent);color:var(--c-teal)}
+  .lh-item .st.off{background:var(--bg);color:var(--ink-faint)}
+  .lh-item .meta{flex:1;min-width:0}
+  .lh-item .meta .nm{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lh-item .meta .sm{display:block;font-size:11.5px;color:var(--ink-faint);font-weight:500;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lh-item .fav{flex:0 0 auto;font-size:18px;color:var(--line);background:none;border:none;cursor:pointer;padding:4px 6px;line-height:1}
+  .lh-item .fav.on{color:var(--orange)}
+  .lh-ttl{flex:1;min-width:0}
+  .lh-ttl .nm{font-size:16px;font-weight:750;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lh-ttl .sub{font-size:11.5px;color:var(--ink-faint);font-weight:600;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lh-star{color:var(--line);font-size:20px;font-weight:700}
+  .lh-star.on{color:var(--orange)}
+  .lh-seg{padding:2px;gap:0}
+  .lh-seg button{font-size:11.5px;padding:5px 9px}
+  .lh-stats{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;margin-bottom:10px}
+  .lh-stats span{font-size:11.5px;font-weight:700;color:var(--ink-soft);background:var(--bg);padding:5px 10px;border-radius:9px;white-space:nowrap}
+  .lh-stats span b{color:var(--ink)}
+  .lh-today .gap{font-weight:500;color:var(--ink-soft);display:block;margin-top:3px;font-size:13px}
+  #lhDayStrip{margin-bottom:10px}
+  .lh-gridwrap{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;min-height:0}
+  .wg-tc.eve{background:color-mix(in srgb,var(--c-blue) 10%,transparent)}
+  .wg-tc.eve .tn{color:var(--c-blue)}
+</style>
+</head>
+<body>
+
+<!-- ============ SETUP ============ -->
+<div id="setup" class="screen">
+  <div class="brand">
+    <div class="mark"><svg viewBox="0 0 24 24"><path d="M12 3 1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg></div>
+    <h1>Server einrichten</h1>
+    <p>Einmalig · komplett kostenlos</p>
+  </div>
+  <div class="panel">
+    <p class="setup-intro">Falls du den Server schon angelegt hast: Du musst nur den Code einmal mit dieser neuen Version ersetzen (Schritt 4–5). Sonst von vorne:</p>
+    <div class="step"><div class="no">1</div><div class="txt">Öffne <a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener">dash.cloudflare.com/sign-up</a> und erstelle ein kostenloses Konto.</div></div>
+    <div class="step"><div class="no">2</div><div class="txt">Links im Menü: <b>Compute (Workers)</b> → <b>Create</b> → <b>Start with Hello World</b> → <b>Get started</b>.</div></div>
+    <div class="step"><div class="no">3</div><div class="txt">Namen eingeben (z.B. <b>untis</b>) → <b>Deploy</b>.</div></div>
+    <div class="step"><div class="no">4</div><div class="txt"><b>Edit code</b> (✏️) klicken, allen Text löschen und diesen Code einfügen:</div></div>
+    <div class="code-box">
+      <button class="copy-btn" id="copyBtn" onclick="copyCode()">Kopieren</button>
+      <pre id="workerCode">export default {
+  async fetch(request) {
+    const cors = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, X-Untis-Session, X-Untis-School, X-Untis-Path, X-Untis-Method, X-Untis-Auth",
+      "Access-Control-Max-Age": "86400",
+    };
+    if (request.method === "OPTIONS") return new Response(null, { headers: cors });
+    if (request.method === "GET" && !request.headers.get("X-Untis-Path"))
+      return new Response("WebUntis-Proxy v4 laeuft.", { headers: { ...cors, "Content-Type": "text/plain; charset=utf-8" } });
+    try {
+      const school = request.headers.get("X-Untis-School") || "hakwels";
+      const session = request.headers.get("X-Untis-Session") || "";
+      const auth = request.headers.get("X-Untis-Auth") || "";
+      const path = request.headers.get("X-Untis-Path") || ("/WebUntis/jsonrpc.do?school=" + encodeURIComponent(school));
+      const method = (request.headers.get("X-Untis-Method") || "POST").toUpperCase();
+      const payload = await request.text();
+      const target = `https://${school}.webuntis.com${path}`;
+      const headers = { "User-Agent": "Stundenplan-App", "Accept": "application/json" };
+      if (method !== "GET" && method !== "HEAD") headers["Content-Type"] = "application/json";
+      if (session) headers["Cookie"] = `JSESSIONID=${session}; schoolname="${school}"`;
+      if (auth) headers["Authorization"] = auth;
+      const opts = { method, headers };
+      if (method !== "GET" && method !== "HEAD") opts.body = payload;
+      const upstream = await fetch(target, opts);
+      const text = await upstream.text();
+      let newSession = "", cookies = [];
+      if (typeof upstream.headers.getSetCookie === "function") cookies = upstream.headers.getSetCookie();
+      else { const sc = upstream.headers.get("set-cookie"); if (sc) cookies = [sc]; }
+      for (const c of cookies) { const m = c.match(/JSESSIONID=([^;]+)/); if (m) { newSession = m[1]; break; } }
+      let parsed; try { parsed = JSON.parse(text); } catch { parsed = { raw: text }; }
+      return new Response(JSON.stringify({ ok: true, data: parsed, session: newSession }),
+        { headers: { ...cors, "Content-Type": "application/json" } });
+    } catch (err) {
+      return new Response(JSON.stringify({ ok: false, error: String(err) }),
+        { status: 502, headers: { ...cors, "Content-Type": "application/json" } });
+    }
+  },
+};</pre>
+    </div>
+    <div class="step" style="margin-top:14px"><div class="no">5</div><div class="txt"><b>Deploy</b> klicken (oben rechts).</div></div>
+    <div class="step"><div class="no">6</div><div class="txt">Server-Adresse (endet auf <b>.workers.dev</b>) hier einfügen:</div></div>
+    <div class="field"><label for="workerUrl">Deine Server-Adresse</label><input id="workerUrl" type="url" inputmode="url" autocapitalize="none" autocorrect="off" placeholder="https://untis.deinname.workers.dev"></div>
+    <button class="btn btn-primary" onclick="saveWorker()">Speichern &amp; weiter</button>
+    <div class="msg" id="setupMsg"></div>
+    <div class="secure"><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>Der Server gehört nur dir und speichert nichts.</div>
+  </div>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<div id="login" class="screen hidden">
+  <div class="brand">
+    <div class="mark"><svg viewBox="0 0 24 24"><path d="M12 3 1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg></div>
+    <h1>Anmelden</h1>
+    <p>HAK Wels · mit Geheimschlüssel</p>
+  </div>
+  <div class="panel">
+    <div class="helpbox">
+      <h4><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>Wo finde ich den Geheimschlüssel?</h4>
+      <ol>
+        <li>In WebUntis (Browser) unten links auf deinen <b>Namen</b> tippen → Profil</li>
+        <li>Tab <b>Freigabe</b> öffnen</li>
+        <li>Bei „Zwei-Faktor-Authentifizierung" auf <b>Anzeigen</b> bzw. <b>Geheimschlüssel anzeigen</b> tippen</li>
+        <li>Den langen Code (Buchstaben + Zahlen) kopieren und unten einfügen</li>
+      </ol>
+    </div>
+    <div class="field"><label for="u">Benutzername</label><input id="u" type="text" inputmode="email" autocapitalize="none" autocorrect="off" autocomplete="username" placeholder="dein WebUntis-Benutzername"></div>
+    <div class="field"><label for="secret">Geheimschlüssel</label><input id="secret" type="text" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="z.B. JBSWY3DPEHPK3PXP"><div class="hint">Wird nur zum Erzeugen des Anmelde-Codes benutzt — kein normales Passwort nötig.</div></div>
+    <div class="checkrow" onclick="document.getElementById('stay').click()"><input type="checkbox" id="stay" checked><label>Angemeldet bleiben (auf diesem Gerät)</label></div>
+    <button class="btn btn-primary" id="loginBtn" onclick="login()">Anmelden</button>
+    <div class="msg" id="msg"></div>
+    <div class="link-row"><a href="#" onclick="backToSetup();return false;">⚙︎ Server-Adresse ändern</a></div>
+    <div class="secure"><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>Alles bleibt auf deinem Gerät &amp; deinem Server.</div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <!-- ===== TAB: HEUTE (Dashboard) ===== -->
+  <section class="tabview on" id="tab-heute">
+    <div class="topbar">
+      <img class="logo" src="logo-hak-header.png" alt="HAK Wels">
+      <div class="acts">
+        <button class="icon-btn" onclick="openLehrer()" title="Lehrerplan"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 1 8l4 2.18v6L12 20l7-3.82v-6l2-1.09V17h2V8L12 3zm6.82 5L12 11.72 5.18 8 12 4.28 18.82 8zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg></button>
+        <button class="icon-btn refresh-btn" onclick="refreshAll(this)" title="Aktualisieren"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
+        <button class="icon-btn" onclick="openSettings()" title="Einstellungen"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+        <button class="icon-btn" onclick="logout()" title="Abmelden"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg></button>
+      </div>
+    </div>
+    <div class="tab-scroll" id="dashBody"></div>
+  </section>
+
+  <!-- ===== TAB: PLAN (Stundenplan) ===== -->
+  <section class="tabview" id="tab-plan">
+  <div class="appbar">
+    <div class="appbar-top">
+      <div class="appbar-title"><span class="klass" id="klass">Stundenplan</span><span class="kw" id="kw"></span></div>
+      <div style="display:flex;gap:7px;align-items:center;flex-shrink:0">
+        <div class="seg" id="seg"><button class="on" data-v="day" onclick="setView('day')">Tag</button><button data-v="week" onclick="setView('week')">Woche</button></div>
+        <button class="icon-btn" onclick="openSettings()" title="Einstellungen"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button><button class="icon-btn" onclick="logout()" title="Abmelden"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg></button>
+      </div>
+    </div>
+    <div class="daystrip" id="daystrip"></div>
+    <div id="weeknav" style="display:none;align-items:center;justify-content:space-between">
+      <button class="icon-btn" onclick="changeWeek(-1)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+      <span id="weekRange" style="font-size:14px;font-weight:700"></span>
+      <button class="icon-btn" onclick="changeWeek(1)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+  <div id="load"><div class="spin"></div>Stundenplan wird geladen…</div>
+  <div class="scroll" id="dayView"><div class="lessons" id="lessons"></div></div>
+  <div class="weekwrap" id="weekView" style="display:none"><div class="weekgrid" id="weekgrid"></div></div>
+  </section>
+
+  <!-- ===== TAB: HAUSÜBUNGEN ===== -->
+  <section class="tabview" id="tab-hu">
+    <div class="topbar">
+      <img class="logo" src="logo-hak-header.png" alt="HAK Wels">
+      <div class="acts"><button class="icon-btn" onclick="openSettings()" title="Einstellungen"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button></div>
+    </div>
+    <div class="tab-scroll"><h1 class="sub-h1">Lehrstoff</h1><div id="huBody"></div></div>
+  </section>
+
+  <!-- ===== TAB: SCHULARBEITEN & TESTS ===== -->
+  <section class="tabview" id="tab-tests">
+    <div class="topbar">
+      <img class="logo" src="logo-hak-header.png" alt="HAK Wels">
+      <div class="acts"><button class="icon-btn refresh-btn" onclick="examLoaded=false;loadExams(this)" title="Aktualisieren"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button><button class="icon-btn" onclick="openSettings()" title="Einstellungen"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button></div>
+    </div>
+    <div class="tab-scroll"><h1 class="sub-h1">Schularbeiten &amp; Tests</h1>
+      <div class="lh-filters" id="exFilters" style="margin:0 0 12px;padding:0">
+        <button class="on" data-f="alle" onclick="setExFilter('alle')">Alle</button>
+        <button data-f="sa" onclick="setExFilter('sa')">Schularbeiten</button>
+        <button data-f="test" onclick="setExFilter('test')">Tests</button>
+        <button data-f="past" onclick="setExFilter('past')">Vergangene</button>
+      </div>
+      <div id="exBody"></div>
+    </div>
+  </section>
+
+  <!-- ===== TAB: ABWESENHEITEN ===== -->
+  <section class="tabview" id="tab-abs">
+    <div class="topbar">
+      <img class="logo" src="logo-hak-header.png" alt="HAK Wels">
+      <div class="acts"><button class="icon-btn" onclick="openSettings()" title="Einstellungen"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button></div>
+    </div>
+    <div class="tab-scroll"><h1 class="sub-h1">Abwesenheiten</h1><div id="absBody"></div></div>
+  </section>
+
+  <!-- ===== TAB-BAR ===== -->
+  <nav class="tabbar">
+    <button class="tabbtn on" data-tab="heute" onclick="switchTab('heute')">
+      <svg viewBox="0 0 24 24"><path d="M3 9.7 12 3l9 6.7V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1V9.7z"/></svg>
+      <span class="nb" id="nbHeute"></span><span class="tl">Heute</span>
+    </button>
+    <button class="tabbtn" data-tab="plan" onclick="switchTab('plan')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.2"/><path d="M3 9.2h18M8 2.8v3.4M16 2.8v3.4"/></svg>
+      <span class="tl">Plan</span>
+    </button>
+    <button class="tabbtn" data-tab="tests" onclick="switchTab('tests')">
+      <svg viewBox="0 0 24 24"><path d="M4 4.5h16v15H4z"/><path d="M8 9h8M8 12.5h8M8 16h5"/></svg>
+      <span class="nb" id="nbTests"></span><span class="tl">Tests</span>
+    </button>
+    <button class="tabbtn" data-tab="hu" onclick="switchTab('hu')">
+      <svg viewBox="0 0 24 24"><path d="M12 6.5C10.5 5 8 4.5 4.5 4.7v13C8 17.5 10.5 18 12 19.5"/><path d="M12 6.5C13.5 5 16 4.5 19.5 4.7v13C16 17.5 13.5 18 12 19.5"/><path d="M12 6.5v13"/></svg>
+      <span class="tl">Lehrstoff</span>
+    </button>
+    <button class="tabbtn" data-tab="abs" onclick="switchTab('abs')">
+      <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2.6" width="8" height="3.8" rx="1.2"/><path d="M9 12.5l1.8 1.8L14 11"/></svg>
+      <span class="tl">Fehlzeiten</span>
+    </button>
+  </nav>
+</div>
+
+<div class="overlay" id="settings">
+  <div class="sheet">
+    <div class="sheet-head"><h2>Einstellungen</h2><button class="icon-btn" onclick="closeSettings()"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button></div>
+    <div class="sheet-sec">
+      <h3>Dein Name</h3>
+      <input id="nameInput" class="name-field" type="text" placeholder="z.B. Dani" autocomplete="off" autocorrect="off" oninput="saveName(this.value)">
+      <p class="sheet-note">Wird für die Begrüßung auf der Startseite verwendet.</p>
+    </div>
+    <div class="sheet-sec">
+      <h3>Startseite beim Öffnen</h3>
+      <div class="seg" id="stSeg" style="width:100%;display:flex">
+        <button data-v="heute" onclick="setStartTab('heute')" style="flex:1">Heute</button>
+        <button data-v="plan" onclick="setStartTab('plan')" style="flex:1">Plan</button>
+      </div>
+    </div>
+    <div class="sheet-sec">
+      <h3>Darstellung</h3>
+      <div class="seg" id="themeSeg" style="width:100%;display:flex">
+        <button data-t="light" onclick="setTheme('light')" style="flex:1">☀︎ Hell</button>
+        <button data-t="dark" onclick="setTheme('dark')" style="flex:1">☾ Dunkel</button>
+      </div>
+    </div>
+    <div class="sheet-sec">
+      <h3>Akzentfarbe</h3>
+      <div class="swatches" id="swatches"></div>
+    </div>
+    <div class="sheet-sec">
+      <h3>Schriftgröße</h3>
+      <div class="seg" id="fsSeg" style="width:100%;display:flex">
+        <button data-v="small" onclick="setFontScale('small')" style="flex:1">Klein</button>
+        <button data-v="normal" onclick="setFontScale('normal')" style="flex:1">Normal</button>
+        <button data-v="large" onclick="setFontScale('large')" style="flex:1">Groß</button>
+      </div>
+    </div>
+    <div class="sheet-sec">
+      <h3>Standardansicht beim Öffnen</h3>
+      <div class="seg" id="svSeg" style="width:100%;display:flex">
+        <button data-v="day" onclick="setStartView('day')" style="flex:1">Tag</button>
+        <button data-v="week" onclick="setStartView('week')" style="flex:1">Woche</button>
+      </div>
+    </div>
+    <div class="sheet-sec">
+      <h3>In der Wochenansicht</h3>
+      <div class="swrow"><span class="lbl">Lehrer anzeigen</span><label class="sw"><input type="checkbox" id="sw_wkTeacher" onchange="toggleSet('wkTeacher',this.checked)"><span class="track"></span></label></div>
+      <div class="swrow"><span class="lbl">Raum anzeigen</span><label class="sw"><input type="checkbox" id="sw_wkRoom" onchange="toggleSet('wkRoom',this.checked)"><span class="track"></span></label></div>
+      <div class="swrow"><span class="lbl">Klasse anzeigen</span><label class="sw"><input type="checkbox" id="sw_wkClass" onchange="toggleSet('wkClass',this.checked)"><span class="track"></span></label></div>
+      <div class="swrow"><span class="lbl">Lehrernamen ausschreiben</span><label class="sw"><input type="checkbox" id="sw_wkTeacherFull" onchange="toggleSet('wkTeacherFull',this.checked)"><span class="track"></span></label></div>
+      <div class="swrow"><span class="lbl">Freie Stunden ausblenden</span><label class="sw"><input type="checkbox" id="sw_hideFree" onchange="toggleSet('hideFree',this.checked)"><span class="track"></span></label></div>
+    </div>
+    <div class="sheet-sec">
+      <h3>Auf der Startseite</h3>
+      <div class="swrow"><span class="lbl">Nächste Schularbeiten</span><label class="sw"><input type="checkbox" id="sw_showExams" onchange="toggleSet('showExams',this.checked)"><span class="track"></span></label></div>
+      <div class="swrow"><span class="lbl">Zuletzt durchgenommen</span><label class="sw"><input type="checkbox" id="sw_showStoff" onchange="toggleSet('showStoff',this.checked)"><span class="track"></span></label></div>
+    </div>
+    <div class="sheet-sec">
+      <h3>Fehlzeiten</h3>
+      <div class="swrow"><span class="lbl">Entschuldigte ausblenden</span><label class="sw"><input type="checkbox" id="sw_hideExcused" onchange="toggleSet('hideExcused',this.checked)"><span class="track"></span></label></div>
+    </div>
+    <div class="sheet-sec">
+      <h3>Eigene Lehrernamen</h3>
+      <div class="tmap-list" id="tmapList"></div>
+      <div class="tmap-add">
+        <input class="code-in" id="tmapCode" placeholder="KÜRZEL" maxlength="6" autocapitalize="characters" autocorrect="off">
+        <input class="name-in" id="tmapName" placeholder="Vorname Nachname">
+        <button onclick="addTeacher()">+</button>
+      </div>
+      <p class="sheet-note">Hier kannst du Kürzel ergänzen oder korrigieren — sie überschreiben die automatische Zuordnung (Basis: Bedienstetenliste der HAK Wels).</p>
+    </div>
+    <div class="sheet-sec">
+      <h3>Kürzel-Umleitungen</h3>
+      <div class="tmap-list" id="aliasList"></div>
+      <div class="tmap-add">
+        <input class="code-in" id="aliasFrom" placeholder="REIC" maxlength="6" autocapitalize="characters" autocorrect="off">
+        <input class="code-in" id="aliasTo" placeholder="→ EIGA" maxlength="6" autocapitalize="characters" autocorrect="off" style="flex:0 0 100px">
+        <button onclick="addAlias()">+</button>
+      </div>
+      <p class="sheet-note">Wenn ein Lehrer in WebUntis unter zwei Kürzeln läuft (z.&nbsp;B. REIC = EIGA), wird überall das Ziel-Kürzel angezeigt und beide Pläne werden zusammengeführt. REIC → EIGA ist fix eingebaut.</p>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="detail">
+  <div class="detail-sheet">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:-6px"><button class="icon-btn" onclick="closeDetail()"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button></div>
+    <div id="detailBody"></div>
+  </div>
+</div>
+
+<div class="overlay" id="lehrer">
+  <div class="lehrer-sheet">
+    <!-- Listen-Ansicht -->
+    <div id="lhListView" style="display:flex;flex-direction:column;flex:1;min-height:0">
+      <div class="lh-head">
+        <h2>Lehrerplan</h2>
+        <button class="icon-btn" onclick="closeLehrer()"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+      </div>
+      <div class="lh-search">
+        <svg class="si" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+        <input id="lhSearch" type="text" placeholder="Kürzel, Name, Fach oder Raum…" autocomplete="off" autocorrect="off" oninput="filterLehrer(this.value)">
+      </div>
+      <div class="lh-filters" id="lhFilters">
+        <button class="on" data-f="alle" onclick="setLhFilter('alle')">Alle</button>
+        <button data-f="fav" onclick="setLhFilter('fav')">★ Favoriten</button>
+        <button data-f="meine" onclick="setLhFilter('meine')">Meine Lehrer</button>
+        <button data-f="jetzt" onclick="setLhFilter('jetzt')">Jetzt im Unterricht</button>
+        <button data-f="frei" onclick="setLhFilter('frei')">Jetzt frei</button>
+      </div>
+      <div class="lh-list" id="lhList"></div>
+    </div>
+    <!-- Detail-Ansicht -->
+    <div id="lhDetailView" class="lh-detail" style="display:none">
+      <div class="lh-head" style="margin-bottom:8px">
+        <button class="icon-btn" onclick="showLehrerList()" title="Zurück"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+        <span class="ab" id="lhAb"></span>
+        <div class="lh-ttl"><div class="nm" id="lhNm"></div><div class="sub" id="lhSub"></div></div>
+        <button class="icon-btn lh-star" id="lhStar" onclick="toggleFav()" title="Favorit">★</button>
+        <button class="icon-btn" onclick="closeLehrer()"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+      </div>
+      <div class="lh-nav">
+        <button class="icon-btn" onclick="lehrerWeek(-1)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+        <span class="rng" id="lhRange"></span>
+        <button class="tdy" onclick="lehrerToday()">Heute</button>
+        <div class="seg lh-seg" id="lhSeg"><button class="on" data-v="week" onclick="setLhView('week')">Woche</button><button data-v="day" onclick="setLhView('day')">Tag</button></div>
+        <button class="icon-btn" onclick="lehrerWeek(1)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+      </div>
+      <div class="lh-today" id="lhToday" style="display:none"></div>
+      <div class="lh-stats" id="lhStats"></div>
+      <div class="lh-gridwrap" id="lhWeekWrap"><div id="lhGrid" class="wgrid"></div></div>
+      <div class="lh-gridwrap" id="lhDayWrap" style="display:none"><div class="daystrip" id="lhDayStrip"></div><div id="lhDayList"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCHOOL='hakwels';
+let WORKER='';
+const PERIODS=[{n:1,s:'07:45',e:'08:35'},{n:2,s:'08:40',e:'09:30'},{n:3,s:'09:35',e:'10:25'},{n:4,s:'10:40',e:'11:30'},{n:5,s:'11:35',e:'12:25'},{n:6,s:'12:25',e:'13:15'},{n:7,s:'13:15',e:'14:05'},{n:8,s:'14:05',e:'14:55'},{n:9,s:'14:55',e:'15:45'},{n:10,s:'15:45',e:'16:35'},{n:11,s:'16:35',e:'17:25'},{n:12,s:'18:00',e:'18:45'},{n:13,s:'18:45',e:'19:30'},{n:14,s:'19:40',e:'20:25'},{n:15,s:'20:25',e:'21:10'},{n:16,s:'21:10',e:'21:55'}];
+const DAY_PERIODS=10; // Tagesschule; Abendschule 11–16 nur wenn belegt
+const DN=['So','Mo','Di','Mi','Do','Fr','Sa'];
+const MN=['Jän','Feb','März','Apr','Mai','Juni','Juli','Aug','Sep','Okt','Nov','Dez'];
+const COLOR={MAM:'col-violet',M:'col-violet',AM:'col-violet',NW:'col-teal',NWS:'col-teal',ETH:'col-blue',RK:'col-blue',RISL:'col-blue',INDU:'col-blue',BSP:'col-blue',UÜ:'col-lime',UU:'col-lime',LU:'col-lime',WK:'col-lime'};
+const TYPE_MAP={CLASS:1,KLASSE:1,TEACHER:2,SUBJECT:3,ROOM:4,STUDENT:5,PERSON:5};
+function typeNum(t){if(typeof t==='number')return t;return TYPE_MAP[String(t).toUpperCase()]||5}
+const TEACHERS={"ALTJ": "Julia Altmann", "ALTM": "Julia Altmann", "APAD": "Debora Aparicio Garrido", "APAR": "Debora Aparicio Garrido", "AUZI": "Johanna Auzinger", "AUZJ": "Johanna Auzinger", "BARE": "Elke Barth", "BART": "Elke Barth", "BAUE": "Sabine Bauer", "BAUM": "Sabine Bauer", "BAUS": "Sabine Bauer", "BERG": "Kerstin Berger", "BERN": "Katrin Bernecker", "BIED": "Doris Biedermann", "BRAM": "Stefan Brameshuber", "BRAS": "Stefan Brameshuber", "BRAT": "Stefan Brameshuber", "BREC": "Christina Breitenfellner", "BREI": "Christina Breitenfellner", "BREM": "Christina Breitenfellner", "BRUA": "Margot Brucker", "BRUM": "Margot Brucker", "BRUR": "Rebekka Bruckner", "BUEG": "Gudrun Büsser-Knaus", "BUEH": "Gudrun Büsser-Knaus", "BUES": "Gudrun Büsser-Knaus", "BUSG": "Gudrun Büsser-Knaus", "BUSH": "Gudrun Büsser-Knaus", "BUSS": "Gudrun Büsser-Knaus", "DALI": "Valbone Dalipi", "DALV": "Valbone Dalipi", "DANC": "Christa Danzer", "DANZ": "Christa Danzer", "DOPA": "Annika Dopona", "DOPK": "Annika Dopona", "DOPM": "Maria Doppelbauer-Rothböck", "DOPO": "Annika Dopona", "DOPP": "Maria Doppelbauer-Rothböck", "ECKE": "Michael Ecker", "ECKM": "Michael Ecker", "ECKU": "Michael Ecker", "EGLA": "Alona Egle", "EGLE": "Alona Egle", "EIGC": "Carin Eigner-Ögerer", "EIGG": "Gerwin Eigner", "ELFA": "Amin Elfeshawi", "ELFE": "Amin Elfeshawi", "ETTI": "Karin Ettinger-Kopeszky", "ETTK": "Karin Ettinger-Kopeszky", "ETTS": "Karin Ettinger-Kopeszky", "FALG": "Gerhild Fallmann-Raupach", "FALL": "Gerhild Fallmann-Raupach", "FEDA": "Albert Federmair", "FEDE": "Albert Federmair", "FELA": "Anna Fellinger", "FELD": "Julia Feldbauer", "FELJ": "Julia Feldbauer", "FELL": "Anna Fellinger", "FELM": "Julia Feldbauer", "FISC": "Fischer", "FISM": "Monika Fischer", "FISS": "Stefan Fischer", "FUEA": "Andreas Führer", "FUEH": "Andreas Führer", "FUHA": "Andreas Führer", "FUHR": "Andreas Führer", "GASE": "Eva Gastelsberger", "GASM": "Magdalena Gaßner", "GASS": "Magdalena Gaßner", "GAST": "Eva Gastelsberger", "GAVJ": "Josip Gavrić", "GAVR": "Josip Gavrić", "GEIC": "Martina Geigl-Mayr", "GEIG": "Martina Geigl-Mayr", "GEIM": "Martina Geigl-Mayr", "GERN": "Nora Gerstbauer", "GERS": "Nora Gerstbauer", "GNAG": "Gerald Gnasmüller", "GNAS": "Gerald Gnasmüller", "GREI": "Lisa Greifeneder", "GREL": "Lisa Greifeneder", "GREP": "Lisa Greifeneder", "GUTA": "Andreas Gutleber", "GUTL": "Andreas Gutleber", "HABA": "Adelheid Habichler", "HABI": "Adelheid Habichler", "HACB": "Brigitte Hacker-Hintenaus", "HACK": "Brigitte Hacker-Hintenaus", "HAID": "Rosemarie Haider-Brachinger", "HAIR": "Rosemarie Haider-Brachinger", "HASK": "Kurt Haspel", "HASP": "Kurt Haspel", "HAWE": "Lisa Hawelka", "HAWL": "Lisa Hawelka", "HAWM": "Lisa Hawelka", "HEGD": "Dorina Hegedüs", "HEGE": "Dorina Hegedüs", "HEME": "Wolfgang Hemetsberger", "HEMW": "Wolfgang Hemetsberger", "HERD": "Denisia Hertila", "HERT": "Denisia Hertila", "HOCA": "Adele Hochleitner-Jofen", "HOCJ": "Sigrid Hochhauser-Pattitoni", "HOCS": "Sigrid Hochhauser-Pattitoni", "HOLI": "Ilse Holoubek", "HOLM": "Ilse Holoubek", "HOLO": "Ilse Holoubek", "HORA": "Andrea Horlacher", "HORL": "Andrea Horlacher", "HRUS": "Ševal Hrustić", "HUEC": "Claudia Huemer", "HUEM": "Claudia Huemer", "IGLE": "Elisabeth Igler", "INDR": "Ulrike Indra", "INDU": "Ulrike Indra", "JAHD": "Doris Jahn", "JAHN": "Doris Jahn", "KAIC": "Claudia Kaiser", "KAIS": "Claudia Kaiser", "KALS": "Sonja Kaltenböck", "KALT": "Sonja Kaltenböck", "KERA": "Andreas Kern", "KERN": "Andreas Kern", "KETC": "Christine Kettlgruber", "KETT": "Christine Kettlgruber", "KINL": "Lisa Kinzl", "KINM": "Lisa Kinzl", "KINZ": "Lisa Kinzl", "KOCA": "Alexandra Koch", "KOCB": "Barbara Koch", "KOCH": "Koch", "KOSI": "Julia Kosilek", "KOSJ": "Julia Kosilek", "KRIB": "Barbara Kriechhammer", "KRIN": "Nicole Kristl", "KRIS": "Kristl", "KRIT": "Barbara Kriechhammer", "KRIU": "Etwina Kristl", "KROB": "Beatrix Kronawettleitner", "KROE": "Beatrix Kronawettleitner", "KRON": "Beatrix Kronawettleitner", "KYEK": "Karin Kyek", "LACH": "Katharina Lachner", "LACK": "Katharina Lachner", "MALD": "Dino Malkić", "MALK": "Dino Malkić", "MAYR": "Sarah Mayrhofer", "MAYS": "Sarah Mayrhofer", "MINC": "Christine Minihuber", "MINI": "Christine Minihuber", "MITT": "Ursula Mitterndorfer", "MITU": "Ursula Mitterndorfer", "MOES": "Thomas Möslinger", "MOET": "Thomas Möslinger", "MOSE": "Susanne Moser", "MOSL": "Thomas Möslinger", "MOSS": "Susanne Moser", "MOST": "Thomas Möslinger", "MUEE": "Eva Müller", "MUEF": "Franz Müller", "MUEH": "Jutta Mühlberger", "MUEJ": "Jutta Mühlberger", "MUEL": "Müller", "MUEM": "Eva Müller", "MUHJ": "Jutta Mühlberger", "MUHL": "Jutta Mühlberger", "MULE": "Eva Müller", "MULF": "Franz Müller", "MULL": "Müller", "MULM": "Eva Müller", "NEUB": "Karin Neubauer", "NEUK": "Karin Neubauer", "NEUM": "Sascha Neumayr", "NEUS": "Sascha Neumayr", "NIED": "Susanne Niederschick", "NIES": "Susanne Niederschick", "NOWG": "Gertraud Nowotny", "NOWH": "Gertraud Nowotny", "NOWO": "Gertraud Nowotny", "OBEG": "Gloria Oberndorfer", "OBEK": "Gloria Oberndorfer", "OBER": "Gloria Oberndorfer", "OLEA": "Mirjam Oleinek", "OLEI": "Mirjam Oleinek", "OLEM": "Mirjam Oleinek", "PABD": "Daniel Pabinger", "PABI": "Daniel Pabinger", "PABW": "Daniel Pabinger", "PANA": "Iris Panagger", "PANI": "Iris Panagger", "PETE": "Tina Peterstorfer", "PETT": "Tina Peterstorfer", "PLAC": "Cornelia Platzer", "PLAT": "Cornelia Platzer", "POLE": "Ursula Poledna", "POLL": "Philipp Pollhammer", "POLP": "Philipp Pollhammer", "POLU": "Ursula Poledna", "POPA": "Jessica Popatnik", "POPG": "Jessica Popatnik", "POPJ": "Jessica Popatnik", "POZA": "Almir Požegić", "POZE": "Almir Požegić", "PRIM": "Margit Pritz", "PRIT": "Margit Pritz", "RATH": "Viktoria Rath", "RATV": "Viktoria Rath", "REGE": "Sonja Regenfelder", "REGS": "Sonja Regenfelder", "REIS": "Sabine Reisinger", "RESC": "Christian Resch", "RIEE": "Eva-Maria Riener", "RIEN": "Eva-Maria Riener", "ROBI": "Ilse Röbl", "ROBL": "Ilse Röbl", "ROBM": "Ilse Röbl", "ROEB": "Ilse Röbl", "ROEI": "Ilse Röbl", "ROEM": "Ilse Röbl", "RUME": "Wolfgang Rumerstorfer", "RUMW": "Wolfgang Rumerstorfer", "RUPF": "Matthias Rupprecht", "RUPM": "Matthias Rupprecht", "RUPP": "Rupprecht", "RUPS": "Sabrina Rupprecht", "SANG": "Verena Sanglhuber", "SANV": "Verena Sanglhuber", "SATJ": "Michael Schatzl", "SATM": "Michael Schatzl", "SATZ": "Michael Schatzl", "SEIR": "Sarah Seiringer", "SEIS": "Sarah Seiringer", "SIBI": "Manuela Sibitz", "SIBM": "Manuela Sibitz", "SILA": "Alexander Silverio", "SILV": "Alexander Silverio", "SMEC": "Carina Schmeißl", "SMEU": "Ulrike Schmeitzl", "SMID": "Katrin Schmid", "SMIE": "Katrin Schmid", "SMIK": "Katrin Schmid", "SNEE": "Stephanie Schneeweiß", "SNES": "Stephanie Schneeweiß", "SOBE": "Magdalena Schobersberger", "SOBM": "Magdalena Schobersberger", "SOHH": "Heike Sohm", "SOHM": "Heike Sohm", "STAB": "Elke Staber", "STAE": "Elke Staber", "STIE": "Elisabeth Stitz", "STIT": "Elisabeth Stitz", "STOC": "Nina Stockinger", "STOE": "Katharina Stöttinger", "STOK": "Katharina Stöttinger", "STON": "Nina Stockinger", "STOT": "Katharina Stöttinger", "STRA": "Alexander Strecker", "STRE": "Alexander Strecker", "SUEA": "Arthur Schütz", "SUEL": "Arthur Schütz", "SUET": "Arthur Schütz", "SUTA": "Arthur Schütz", "SUTL": "Arthur Schütz", "SUTZ": "Arthur Schütz", "TASC": "Irmtraud Tasch", "TASE": "Irmtraud Tasch", "TASI": "Irmtraud Tasch", "THAL": "Michael Thallinger", "THAM": "Michael Thallinger", "TOPI": "Ljiljana Topic", "TOPL": "Ljiljana Topic", "TSCA": "Alexandra Tschaudi-Fischer", "TSCH": "Alexandra Tschaudi-Fischer", "VIEK": "Pia Viernstein", "VIEP": "Pia Viernstein", "VIER": "Pia Viernstein", "VORD": "Petra Vorderwinkler-Haas", "VORP": "Petra Vorderwinkler-Haas", "VOSC": "Johanna Vošćak", "VOSJ": "Johanna Vošćak", "WAGA": "Alexandra Wagner", "WAGL": "Alexandra Wagner", "WAGN": "Alexandra Wagner", "WEIC": "Claudia Weitzenböck", "WEIJ": "Markus Weiss", "WEIM": "Markus Weiss", "WEIS": "Markus Weiss", "WEIT": "Claudia Weitzenböck", "WERH": "Roland Werneck", "WERN": "Roland Werneck", "WERR": "Roland Werneck", "WINC": "Christoph Winkler", "WINK": "Christoph Winkler", "WINT": "Judith Winter-McBride", "WOEC": "Sylvia Wölfel", "WOEL": "Sylvia Wölfel", "WOES": "Sylvia Wölfel", "WOLC": "Sylvia Wölfel", "ZEGE": "Jutta Zegermacher", "ZEGJ": "Jutta Zegermacher", "ZEHE": "Wilfried Zehetner", "ZEHW": "Wilfried Zehetner", "ZEIN": "Ursula Zeininger", "ZEIU": "Ursula Zeininger"};
+function teacherName(code){if(!code)return '';return String(code).split('/').map(c=>{c=c.trim();const u=c.toUpperCase();const d=(typeof dispCode==='function'?dispCode(u):u).toUpperCase();return CUSTOM_TEACHERS[u]||CUSTOM_TEACHERS[d]||TEACHER_OVERRIDES[u]||TEACHER_OVERRIDES[d]||TEACHERS[c]||TEACHERS[u]||TEACHERS[d]||c}).join(', ')}
+const TEACHER_DB={"ALTJ":"Julia Altmann","APAD":"Debora Aparicio Garrido","AUZJ":"Johanna Auzinger","BARE":"Elke Barth","BAUS":"Sabine Bauer","BERK":"Kerstin Berger","BIED":"Doris Biedermann","BITE":"Eva Bittendorfer","BRAS":"Stefan Brameshuber","BREC":"Christina Breitenfellner","BRUM":"Margot Brucker","BRUR":"Rebekka Bruckner","BUEG":"Gudrun Büsser-Knaus","DALV":"Valbone Dalipi","DANC":"Christa Danzer","DOPM":"Maria Doppelbauer-Rothböck","ECKM":"Michael Ecker","EGLA":"Alona Egle","EIGG":"Gerwin Eigner","ELFA":"Amin Elfeshawi","ETTK":"Karin Ettinger-Kopeszky","FALG":"Gerhild Fallmann-Raupach","FEDA":"Albert Federmair","FELA":"Anna Fellinger","FENN":"Nicole Fenk","FISM":"Monika Fischer","FISS":"Stefan Fischer","FUEA":"Andreas Führer","TSAL":"Alexandra Tschaudi-Fischer","TSCA":"Alexandra Tschaudi-Fischer","GASM":"Magdalena Gaßner","GASE":"Eva Gastelsberger","GAVJ":"Josip Gavrić","GEIM":"Martina Geigl-Mayr","GERN":"Nora Gerstbauer","GNAG":"Gerald Gnasmüller","GREL":"Lisa Greifeneder","GUTA":"Andreas Gutleber","HABA":"Adelheid Habichler","HACB":"Brigitte Hacker-Hintenaus","HAIR":"Rosemarie Haider-Brachinger","HASK":"Kurt Haspel","HAWL":"Lisa Hawelka","HEGD":"Dorina Hegedüs","HEMW":"Wolfgang Hemetsberger","HERD":"Denisia Hertila","HOCS":"Sigrid Hochhauser-Pattitoni","HOCA":"Adele Hochleitner-Jofen","HOLI":"Ilse Holoubek","HRUS":"Ševal Hrustić","HUEC":"Claudia Huemer","IGLE":"Elisabeth Igler","INDU":"Ulrike Indra","JAHD":"Doris Jahn","JOZS":"Saša Jozić","KALS":"Sonja Kaltenböck","KERA":"Andreas Kern","KETC":"Christine Kettlgruber","KINL":"Lisa Kinzl","KOCA":"Alexandra Koch","KOSJ":"Julia Kosilek","KRIB":"Barbara Kriechhammer","KRIE":"Etwina Kristl","KROB":"Beatrix Kronawettleitner","KYEK":"Karin Kyek","LACK":"Katharina Lachner","MAYS":"Sarah Mayrhofer","MINC":"Christine Minihuber","MITU":"Ursula Mitterndorfer","MOSS":"Susanne Moser","MOET":"Thomas Möslinger","MUEJ":"Jutta Mühlberger","MUEF":"Franz Müller","MUEE":"Eva Müller","NEUK":"Karin Neubauer","NEUS":"Sascha Neumayr","NIES":"Susanne Niederschick","NOWG":"Gertraud Nowotny","OBEG":"Gloria Oberndorfer","OLEM":"Mirjam Oleinek","PABD":"Daniel Pabinger","PANI":"Iris Panagger","PETT":"Tina Peterstorfer","PLAC":"Cornelia Platzer","POLU":"Ursula Poledna","POLP":"Philipp Pollhammer","POPJ":"Jessica Popatnik","POZA":"Almir Požegić","PRIM":"Margit Pritz","RATV":"Viktoria Rath","REGS":"Sonja Regenfelder","REIC":"Carin Eigner-Oegerer","REIS":"Sabine Reisinger","RESC":"Christian Resch","RIEE":"Eva-Maria Riener","ROEI":"Ilse Röbl","RUMW":"Wolfgang Rumerstorfer","RUPM":"Matthias Rupprecht","RUPS":"Sabrina Rupprecht","SANV":"Verena Sanglhuber","SCHM":"Michael Schatzl","SCHC":"Carina Schmeißl","SCHU":"Ulrike Schmeitzl","SCHK":"Katrin Schmid","SCHS":"Stephanie Schneeweiß","SCHA":"Arthur Schütz","SEIS":"Sarah Seiringer","SIBM":"Manuela Sibitz","SILA":"Alexander Silverio","SOHH":"Heike Sohm","STAE":"Elke Staber","STIE":"Elisabeth Stitz","STON":"Nina Stockinger","STOK":"Katharina Stöttinger","STRA":"Alexander Strecker","TASI":"Irmtraud Tasch","THAM":"Michael Thallinger","TOPL":"Ljiljana Topic","TSCA":"Alexandra Tschaudi-Fischer","VIEP":"Pia Viernstein","VORP":"Petra Vorderwinkler-Haas","VOSJ":"Johanna Vošćak","WAGA":"Alexandra Wagner","WEIM":"Markus Weiss","WEIC":"Claudia Weitzenböck","WERR":"Roland Werneck","WILC":"Colton Williams","WINC":"Christoph Winkler","WINJ":"Judith Winter-McBride","WOES":"Sylvia Wölfel","WOLS":"Sigrid Wolfinger","ZEGJ":"Jutta Zegermacher","ZEHW":"Wilfried Zehetner","ZEIU":"Ursula Zeininger","FISH":"Stefan Fischer","GNAS":"Gerald Gnasmüller","SATM":"Michael Schatzl","EIGA":"Carin Eigner-Oegerer","ELFE":"Amin Elfeshawi","KOCB":"Barbara Koch","MALD":"Dino Malkić","OLEI":"Mirjam Oleinek","BRAR":"Rosemarie Brachinger"};
+const TEACHER_OVERRIDES=TEACHER_DB;
+/* Kürzel-Aliase: WebUntis-Kürzel -> angezeigtes Kürzel (z.B. REIC wird als EIGA geführt) */
+const TEACHER_ALIAS={"REIC":"EIGA"};
+let CUSTOM_ALIAS={};
+function dispCode(c){if(!c)return "";return String(c).split("/").map(x=>{x=x.trim();const u=x.toUpperCase();return CUSTOM_ALIAS[u]||TEACHER_ALIAS[u]||x}).join("/")}
+function sameTeacher(a,b){return dispCode(a).toUpperCase()===dispCode(b).toUpperCase()}
+let CUSTOM_TEACHERS={};
+let SET={fontScale:'normal',startView:'day',startTab:'heute',showExams:true,showStoff:true,hideExcused:false,wkTeacher:true,wkRoom:true,wkClass:true,wkTeacherFull:false,hideFree:false};
+function loadSet(){try{Object.assign(SET,JSON.parse(store.get('untis_settings')||'{}'))}catch(e){}}
+function saveSet(){store.set('untis_settings',JSON.stringify(SET))}
+function applyFontScale(){document.documentElement.setAttribute('data-fs',SET.fontScale)}
+function colorFor(s){if(!s)return'col-amber';const up=s.toUpperCase().replace(/[0-9_].*$/,'');for(const k in COLOR){if(up.startsWith(k))return COLOR[k]}const pool=['col-amber','col-violet','col-teal','col-blue','col-rose'];let h=0;for(const ch of up)h=(h*31+ch.charCodeAt(0))&255;return pool[h%pool.length]}
+
+const mem={};
+const store={get(k){try{return localStorage.getItem(k)}catch{return mem[k]||null}},set(k,v){try{localStorage.setItem(k,v)}catch{mem[k]=v}},del(k){try{localStorage.removeItem(k)}catch{delete mem[k]}}};
+
+let session=null,personId=null,personType=5,klasseName='',masterTs=0;
+let subjMap={},teacherMap={},roomMap={},klasseMap={},holidayList=[];
+let monday=getMonday(new Date());
+let selectedDay=clampWeekday(new Date());
+let view='day',weekLessons=[],holidays={};
+
+function getMonday(d){const x=new Date(d);const w=x.getDay();x.setDate(x.getDate()+(w===0?-6:1-w));x.setHours(0,0,0,0);return x}
+function clampWeekday(d){const w=d.getDay();return(w===0||w===6)?0:w-1}
+function ymd(d){return`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`}
+function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));t.setUTCDate(t.getUTCDate()+4-(t.getUTCDay()||7));const y=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil((((t-y)/864e5)+1)/7)}
+function weekDays(){const a=[];for(let i=0;i<5;i++){const d=new Date(monday);d.setDate(d.getDate()+i);a.push(d)}return a}
+function sameDay(a,b){return a.getFullYear()==b.getFullYear()&&a.getMonth()==b.getMonth()&&a.getDate()==b.getDate()}
+
+/* ===== TOTP (Geheimschlüssel → Anmelde-Code) ===== */
+function base32Decode(s){
+  const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+  s=(s||'').toUpperCase().replace(/[^A-Z2-7]/g,'');
+  let bits=0,val=0,idx=0;const out=new Uint8Array(Math.ceil(s.length*5/8));
+  for(let i=0;i<s.length;i++){const c=A.indexOf(s[i]);if(c<0)continue;val=(val<<5)|c;bits+=5;if(bits>=8){out[idx++]=(val>>>(bits-8))&0xff;bits-=8}}
+  return out.buffer.slice(0,idx);
+}
+async function totp(secret){
+  const key=base32Decode(secret);
+  const counter=Math.floor(Date.now()/30000);
+  const buf=new ArrayBuffer(8);const dv=new DataView(buf);
+  dv.setUint32(0,Math.floor(counter/0x100000000),false);
+  dv.setUint32(4,counter>>>0,false);
+  const ck=await crypto.subtle.importKey('raw',key,{name:'HMAC',hash:'SHA-1'},false,['sign']);
+  const sig=new Uint8Array(await crypto.subtle.sign('HMAC',ck,buf));
+  const off=sig[sig.length-1]&0x0f;
+  const bin=((sig[off]&0x7f)<<24)|((sig[off+1]&0xff)<<16)|((sig[off+2]&0xff)<<8)|(sig[off+3]&0xff);
+  return String(bin%1000000).padStart(6,'0');
+}
+
+/* ===== SETUP ===== */
+function copyCode(){
+  const code=document.getElementById('workerCode').textContent;
+  const btn=document.getElementById('copyBtn');
+  const done=()=>{btn.textContent='Kopiert ✓';btn.classList.add('done');setTimeout(()=>{btn.textContent='Kopieren';btn.classList.remove('done')},2200)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code).then(done).catch(()=>fallbackCopy(code,done))}else fallbackCopy(code,done);
+}
+function fallbackCopy(t,cb){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');cb()}catch{}document.body.removeChild(ta)}
+function saveWorker(){
+  let url=document.getElementById('workerUrl').value.trim();
+  const m=document.getElementById('setupMsg');
+  if(!url){m.textContent='Bitte deine Server-Adresse eingeben.';m.className='msg err';return}
+  if(!/^https?:\/\//.test(url))url='https://'+url;
+  url=url.replace(/\/+$/,'');
+  m.textContent='Server wird getestet…';m.className='msg info';
+  fetch(url,{method:'GET'}).then(r=>r.text()).then(()=>{WORKER=url;store.set('untis_worker',url);m.textContent='Server gefunden! ✓';m.className='msg ok';setTimeout(()=>{showScreen('login');tryAutoLogin()},700)})
+  .catch(()=>{WORKER=url;store.set('untis_worker',url);m.textContent='Gespeichert.';m.className='msg info';setTimeout(()=>{showScreen('login');tryAutoLogin()},900)});
+}
+function backToSetup(){document.getElementById('workerUrl').value=WORKER||store.get('untis_worker')||'';showScreen('setup')}
+function showScreen(n){document.getElementById('setup').classList.toggle('hidden',n!=='setup');document.getElementById('login').classList.toggle('hidden',n!=='login');document.getElementById('app').style.display=n==='app'?'flex':'none'}
+
+/* ===== NETWORK ===== */
+async function rpc(path,method,params,withSession){
+  if(!WORKER)throw new Error('NO_WORKER');
+  const res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json','X-Untis-School':SCHOOL,'X-Untis-Path':path,...(withSession&&session?{'X-Untis-Session':session}:{})},body:JSON.stringify({id:'req',method,params,jsonrpc:'2.0'})});
+  if(!res.ok)throw new Error('SERVER_'+res.status);
+  const env=await res.json();
+  if(!env.ok)throw new Error('UPSTREAM');
+  if(env.session)session=env.session;
+  const data=env.data||{};
+  if(data.error){const e=new Error((data.error.message||'RPC'));e.code=data.error.code;throw e}
+  return data.result;
+}
+function internPath(m){return `/WebUntis/jsonrpc_intern.do?m=${m}&school=${SCHOOL}&v=i2.2`}
+/* Mobile-API (wie die Untis-App): jeder Aufruf mit frischem Einmalcode aus dem Geheimschlüssel */
+async function mobileCall(method,params){
+  const user=store.get('untis_user')||document.getElementById('u').value.trim();
+  const secret=(store.get('untis_secret')||document.getElementById('secret').value||'').replace(/\s+/g,'').toUpperCase();
+  if(!user||!secret)throw new Error('NO_CREDS');
+  const otp=await totp(secret);
+  const r=await rpc(internPath(method),method,[Object.assign({},params,{auth:{clientTime:Date.now(),user,otp}})],true);
+  return r;
+}
+function isoDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function fromIsoDT(s){const m=String(s||'').match(/(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);if(!m)return {date:'',hhmm:''};return {date:m[1]+m[2]+m[3],hhmm:m[4]?m[4]+m[5]:''}}
+function classicPath(){return `/WebUntis/jsonrpc.do?school=${SCHOOL}`}
+
+/* ===== LOGIN (Secret/TOTP) ===== */
+async function login(){
+  const user=document.getElementById('u').value.trim();
+  const secret=document.getElementById('secret').value.trim();
+  const stay=document.getElementById('stay').checked;
+  const btn=document.getElementById('loginBtn');
+  if(!user||!secret)return showMsg('Bitte Benutzername und Geheimschlüssel eingeben.','err');
+  btn.disabled=true;btn.textContent='Anmelden…';showMsg('Code wird erzeugt & verbunden…','info');
+  try{
+    let otp;
+    try{otp=await totp(secret)}catch{throw new Error('BAD_SECRET')}
+    const r=await rpc(internPath('getUserData2017'),'getUserData2017',[{auth:{clientTime:Date.now(),user,otp}}],false);
+    if(!r||!r.userData)throw new Error('NO_USER');
+    personId=r.userData.elemId;personType=typeNum(r.userData.elemType);
+    if(r.masterData){buildMaps(r.masterData);masterTs=r.masterData.timeStamp||0}
+    klasseName=(r.userData.klassenIds&&klasseMap[r.userData.klassenIds[0]])||r.userData.displayName||'Mein Plan';
+    if(!store.get('mhw_name')){const dn=(r.userData.displayName||'').trim();if(dn){const parts=dn.split(/[\s,]+/).filter(Boolean);if(parts.length)store.set('mhw_name',parts[parts.length-1])}}
+    if(stay){store.set('untis_user',user);store.set('untis_secret',secret)}else{store.del('untis_user');store.del('untis_secret')}
+    showScreen('app');
+    document.getElementById('klass').textContent=klasseName;
+    switchTab(SET.startTab||'heute');
+    await loadWeek();setView(SET.startView);
+    loadUpcoming();loadExams();
+  }catch(e){
+    console.error(e);
+    if(e.message==='BAD_SECRET')showMsg('Der Geheimschlüssel sieht ungültig aus. Bitte den kompletten Code (nur Buchstaben & Zahlen) kopieren.','err');
+    else if(e.code===-8504||/bad credentials|denied|invalid|otp|authentication/i.test(e.message))showMsg('Anmeldung abgelehnt. Prüf Benutzernamen und ob der Geheimschlüssel korrekt & vollständig ist. Wichtig: Die Uhrzeit deines Geräts muss stimmen.','err');
+    else if(e.message==='NO_WORKER')showMsg('Keine Server-Adresse hinterlegt.','err');
+    else if(/^SERVER_|UPSTREAM/.test(e.message))showMsg('Der Server antwortet nicht. Hast du den NEUEN Code (v2) bei Cloudflare eingefügt und auf Deploy geklickt? (⚙︎ Server-Adresse ändern)','err');
+    else if(e.message==='NO_USER')showMsg('Keine Nutzerdaten erhalten — meist falscher Benutzername oder Geheimschlüssel.','err');
+    else showMsg('Anmeldung fehlgeschlagen: '+e.message,'err');
+  }finally{btn.disabled=false;btn.textContent='Anmelden'}
+}
+function tryAutoLogin(){const u=store.get('untis_user'),s=store.get('untis_secret');if(u&&s){document.getElementById('u').value=u;document.getElementById('secret').value=s;document.getElementById('stay').checked=true;login()}}
+function showMsg(t,c){const m=document.getElementById('msg');m.textContent=t;m.className='msg '+c}
+async function logout(){session=null;personId=null;store.del('untis_user');store.del('untis_secret');document.getElementById('secret').value='';document.getElementById('msg').className='msg';showScreen('login')}
+
+function buildMaps(md){
+  subjMap={};teacherMap={};roomMap={};klasseMap={};holidayList=[];
+  (md.subjects||[]).forEach(s=>subjMap[s.id]=s.name||s.longName||'');
+  (md.teachers||[]).forEach(t=>teacherMap[t.id]=t.name||((t.firstName||'')+(t.lastName||''))||'');
+  (md.rooms||[]).forEach(r=>roomMap[r.id]=r.name||r.longName||'');
+  (md.klassen||[]).forEach(k=>klasseMap[k.id]=k.name||k.longName||'');
+  holidayList=(md.holidays||[]).map(h=>({name:h.longName||h.name||'Ferien',start:ndate(h.startDate),end:ndate(h.endDate||h.startDate)})).filter(h=>h.start&&h.end);
+}
+
+/* ===== LOAD ===== */
+function fmtD(y){const s=String(y);return s.length===8?`${s.slice(6,8)}.${s.slice(4,6)}.`:s}
+let bearerToken='';
+async function getBearer(){
+  if(bearerToken)return bearerToken;
+  try{const d=await restGet('/WebUntis/api/token/new',false);
+    let t = (typeof d==='string')?d : (d&&d.raw)?d.raw : (d&&d.token)?d.token : '';
+    bearerToken=(t||'').toString().trim();
+  }catch(e){}
+  return bearerToken;
+}
+async function restGet(path,useBearer){
+  const headers={'Content-Type':'application/json','X-Untis-School':SCHOOL,'X-Untis-Path':path,'X-Untis-Method':'GET'};
+  if(session)headers['X-Untis-Session']=session;
+  if(useBearer){const t=await getBearer();if(t)headers['X-Untis-Auth']='Bearer '+t}
+  const res=await fetch(WORKER,{method:'POST',headers,body:''});
+  if(!res.ok)throw new Error('REST_'+res.status);
+  const env=await res.json();if(!env.ok)throw new Error('REST_FAIL');if(env.session)session=env.session;
+  return env.data;
+}
+async function loadExtras(startD,endD){
+  const sd=ymd(startD),ed=ymd(endD);const out={hw:{},exams:[]};
+  try{const d=await restGet(`/WebUntis/api/homeworks/lessons?startDate=${sd}&endDate=${ed}`,true);
+    const root=(d&&d.data)?d.data:d;const hws=(root&&root.homeworks)||[];
+    hws.forEach(h=>{const k=h.lessonId+'_'+h.date;const due=(h.dueDate&&h.dueDate!==h.date)?(' (bis '+fmtD(h.dueDate)+')'):'';const t=(h.text||h.remark||'').trim();if(t)(out.hw[k]=out.hw[k]||[]).push(t+due)});
+  }catch(e){}
+  try{const d=await restGet(`/WebUntis/api/exams?startDate=${sd}&endDate=${ed}`,true);
+    const root=(d&&d.data)?d.data:d;out.exams=(root&&(root.exams||root.records))||[];
+  }catch(e){}
+  return out;
+}
+async function loadWeek(){
+  showLoad(true);
+  document.getElementById('kw').textContent='KW '+isoWeek(monday);
+  updateWeekRange();
+  try{
+    const days=weekDays();
+    const r=await rpc(classicPath(),'getTimetable',{options:{startDate:parseInt(ymd(days[0])),endDate:parseInt(ymd(days[4])),element:{id:personId,type:personType},showInfo:true,showSubstText:true,showLsText:true,showStudentgroup:true,klasseFields:['id','name'],roomFields:['id','name'],subjectFields:['id','name'],teacherFields:['id','name']}},true);
+    weekLessons=mergeConsecutive(parseClassic(r||[]));
+    computeHolidays(days);
+    render();
+    loadExtras(days[0],days[4]).then(ex=>{
+      let changed=false;
+      weekLessons.forEach(l=>{
+        const k=l.lessonId+'_'+l.date;
+        if(ex.hw[k]&&ex.hw[k].length){l.homework=ex.hw[k].join('\n');changed=true}
+        (ex.exams||[]).forEach(e=>{const ed=String(e.examDate||e.date||'');const es=e.subject||(e.subjects&&e.subjects[0]&&(e.subjects[0].name||e.subjects[0]))||'';if(ed===l.date&&(!es||es===l.subject)){if(!l.isExam){l.isExam=true;changed=true}if(e.name&&!l.examText)l.examText=e.name}});
+      });
+      if(changed)render();
+    }).catch(()=>{});
+  }catch(e){console.error(e);weekLessons=[];render()}
+  finally{showLoad(false)}
+}
+function buildMaps2017merge(md){
+  (md.subjects||[]).forEach(s=>subjMap[s.id]=s.name||s.longName||subjMap[s.id]||'');
+  (md.teachers||[]).forEach(t=>teacherMap[t.id]=t.name||teacherMap[t.id]||'');
+  (md.rooms||[]).forEach(r=>roomMap[r.id]=r.name||roomMap[r.id]||'');
+  (md.klassen||[]).forEach(k=>klasseMap[k.id]=k.name||klasseMap[k.id]||'');
+  if((md.holidays||[]).length)holidayList=(md.holidays||[]).map(h=>({name:h.longName||h.name||'Ferien',start:ndate(h.startDate),end:ndate(h.endDate||h.startDate)})).filter(h=>h.start&&h.end);
+  if(md.timeStamp)masterTs=md.timeStamp;
+}
+function hhmm(dtStr){const m=String(dtStr).match(/T(\d{2}):?(\d{2})/);return m?(m[1]+m[2]):''}
+function dpart(dtStr){const m=String(dtStr).match(/(\d{4})-(\d{2})-(\d{2})/);return m?(m[1]+m[2]+m[3]):''}
+
+function parse2017(periods){
+  return (periods||[]).map(p=>{
+    let date,st,et;
+    if(p.startDateTime){date=dpart(p.startDateTime);st=hhmm(p.startDateTime);et=hhmm(p.endDateTime)}
+    else{date=String(p.date);st=String(p.startTime).padStart(4,'0');et=String(p.endTime).padStart(4,'0')}
+    const subj=[],teach=[],teachOrg=[],room=[],roomOrg=[];
+    (p.elements||[]).forEach(e=>{
+      const nm=(t,id)=>t===2?teacherMap[id]:t===3?subjMap[id]:t===4?roomMap[id]:t===1?klasseMap[id]:'';
+      if(e.type===3){if(subjMap[e.id])subj.push(subjMap[e.id])}
+      else if(e.type===2){if(teacherMap[e.id])teach.push(teacherMap[e.id]);if(e.orgId&&teacherMap[e.orgId])teachOrg.push(teacherMap[e.orgId])}
+      else if(e.type===4){if(roomMap[e.id])room.push(roomMap[e.id]);if(e.orgId&&roomMap[e.orgId])roomOrg.push(roomMap[e.orgId])}
+    });
+    const cs=String(p.cellState||p.is&&p.is.cellState||'').toUpperCase();
+    const cancelled=cs==='CANCEL'||cs==='CANCELLED'||!!(p.is&&p.is.cancelled);
+    const elemSubst=(p.elements||[]).some(e=>/SUBST/i.test(e.state||''));
+    const substitution=(cs.indexOf('SUBST')>=0||elemSubst||teachOrg.length>0||roomOrg.length>0)&&!cancelled;
+    const isExam=cs==='EXAM'||cs==='ADDITIONAL_EXAM'||!!(p.is&&p.is.exam);
+    const tx=p.text||{};const info=tx.info||tx.substitution||tx.lesson||p.substText||p.info||'';
+    return {date,st,et,subject:subj.join('/'),teacher:teach.join('/'),teacherOrig:teachOrg.join('/'),room:room.join('/'),roomOrig:roomOrg.join('/'),cancelled,substitution,isExam,info,group:''};
+  }).filter(x=>x.date&&x.st);
+}
+function parseClassic(raw){
+  return (raw||[]).map(p=>{
+    const su=(p.su||[]);
+    const subj=su.map(o=>o.name||o.longname||subjMap[o.id]||'').join('/');
+    const subjectOrig=su.map(o=>o.orgname||'').filter(Boolean).join('/');
+    const te=(p.te||[]),ro=(p.ro||[]);
+    const teacher=te.map(o=>o.name||teacherMap[o.id]||'').join('/');
+    const teacherOrig=te.map(o=>o.orgname||'').filter(Boolean).join('/');
+    const room=ro.map(o=>o.name||roomMap[o.id]||'').join('/');
+    const roomOrig=ro.map(o=>o.orgname||'').filter(Boolean).join('/');
+    const code=p.code||'';
+    const klass=(p.kl||[]).map(o=>o.name||klasseMap[o.id]||'').filter(Boolean).join(' ');
+    const txt=((p.info||'')+' '+(p.substText||'')+' '+(p.lstext||'')).toLowerCase();
+    const isExam=code==='exam'||/schularbeit|klausur|prüfung|schulübung|\bsa\b|\bsü\b|\btest\b|\blzk\b|smüp|smuep|mitarbeitsüberprüfung|wiederholung/i.test(txt);
+    const cancelled=code==='cancelled';
+    const subjChg=!!(subjectOrig&&subjectOrig!==subj)&&!cancelled;
+    const hasOrig=!!(teacherOrig||roomOrig||subjectOrig);
+    const added=(code==='irregular'||code==='additional')&&!hasOrig&&!cancelled;
+    return {lessonId:p.lsnumber||p.id||0,date:String(p.date),st:String(p.startTime).padStart(4,'0'),et:String(p.endTime).padStart(4,'0'),subject:subj,subjectOrig,teacher,teacherOrig,room,roomOrig,code,cancelled,substitution:hasOrig&&!cancelled,subjChg,added,isExam,examText:'',homework:'',lstext:p.lstext||'',info:p.info||p.substText||p.lstext||'',group:klass||p.sg||''};
+  });
+}
+function mergeConsecutive(lessons){
+  const key=l=>`${l.date}|${l.subject}|${l.teacher}|${l.room}|${l.cancelled?'C':''}${l.substitution?'S':''}|${l.info}`;
+  const arr=[...lessons].sort((a,b)=>a.date.localeCompare(b.date)||a.st.localeCompare(b.st));
+  const out=[];
+  for(const l of arr){
+    const lp=periodsOf(l);if(!lp.length){out.push({...l});continue}
+    let merged=false;
+    for(const m of out){
+      if(key(m)===key(l)){
+        const mp=periodsOf(m);const mLast=mp[mp.length-1];
+        if(lp[0]===mLast+1||l.st===m.et){if(parseInt(l.et)>parseInt(m.et))m.et=l.et;merged=true;break}
+      }
+    }
+    if(!merged)out.push({...l});
+  }
+  return out;
+}
+function ndate(v){if(v==null)return '';const s=String(v).replace(/[^0-9]/g,'');return s.length===8?s:''}
+function computeHolidays(days){holidays={};days.forEach((d,i)=>{const k=ymd(d);holidayList.forEach(h=>{if(k>=h.start&&k<=h.end)holidays[i]=h.name})})}
+function periodsOf(l){const a=parseInt(l.st),b=parseInt(l.et);const o=[];PERIODS.forEach((p,i)=>{const ps=+p.s.replace(':',''),pe=+p.e.replace(':','');if(a<pe&&b>ps)o.push(i)});return o}
+
+/* ===== RENDER ===== */
+function showLoad(on){document.getElementById('load').style.display=on?'block':'none';document.getElementById('dayView').style.display=(!on&&view==='day')?'block':'none';document.getElementById('weekView').style.display=(!on&&view==='week')?'block':'none'}
+function setView(v){view=v;document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));document.getElementById('daystrip').style.display=v==='day'?'flex':'none';document.getElementById('weeknav').style.display=v==='week'?'flex':'none';showLoad(false);render()}
+function render(){if(view==='day')renderDay();else renderWeek()}
+function buildDayStrip(){const strip=document.getElementById('daystrip');strip.innerHTML='';const today=new Date();weekDays().forEach((d,i)=>{const c=document.createElement('div');c.className='daychip'+(i===selectedDay?' on':'')+(sameDay(d,today)?' today':'');c.innerHTML=`<div class="dn">${DN[d.getDay()]}</div><div class="dd">${d.getDate()}</div>`;c.onclick=()=>{selectedDay=i;renderDay()};strip.appendChild(c)})}
+
+function renderDay(){
+  buildDayStrip();
+  const wrap=document.getElementById('lessons');wrap.innerHTML='';
+  const d=weekDays()[selectedDay];const key=ymd(d);
+  if(holidays[selectedDay]){wrap.innerHTML=emptyState('event',holidays[selectedDay],'Heute ist schulfrei.');return}
+  const dayL=weekLessons.filter(l=>l.date===key);
+  if(dayL.length===0){wrap.innerHTML=emptyState('cal','Keine Stunden','Für diesen Tag ist nichts eingetragen.');return}
+  const slots={};dayL.forEach(l=>{periodsOf(l).forEach(pi=>{(slots[pi]=slots[pi]||[]);if(!slots[pi].some(x=>x.subject===l.subject&&x.teacher===l.teacher&&x.st===l.st))slots[pi].push(l)})});
+  const used=Object.keys(slots).map(Number).sort((a,b)=>a-b);
+  if(!used.length){wrap.innerHTML=emptyState('cal','Keine Stunden','Für diesen Tag ist nichts eingetragen.');return}
+  const leg=document.createElement('div');leg.className='legend';leg.innerHTML=`<span><i style="background:var(--c-amber)"></i>Wirtschaft</span><span><i style="background:var(--c-violet)"></i>Mathe</span><span><i style="background:var(--c-teal)"></i>Naturwiss.</span><span><i style="background:var(--c-blue)"></i>Rel./Ethik</span><span><i style="background:var(--c-lime)"></i>Übungen</span>`;wrap.appendChild(leg);
+  const first=used[0],last=used[used.length-1];let delay=0;
+  for(let pi=first;pi<=last;pi++){
+    if(!slots[pi]){const g=document.createElement('div');g.className='freegap';g.textContent=`Freistunde · ${PERIODS[pi].n}. Stunde`;wrap.appendChild(g);continue}
+    const arr=slots[pi].filter(l=>periodsOf(l)[0]===pi);const list=arr.length?arr:slots[pi];
+    list.forEach(l=>{wrap.appendChild(card(l,delay));delay+=0.04})
+  }
+}
+function card(l,delay){
+  const span=periodsOf(l);const p0=PERIODS[span[0]]||PERIODS[0],p1=PERIODS[span[span.length-1]]||p0;
+  const col=l.cancelled?'col-slate':colorFor(l.subject);
+  const now=new Date();const todayStr=`${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+  const nowHHMM=now.getHours()*100+now.getMinutes();
+  const isNow=l.date===todayStr&&nowHHMM>=parseInt(l.st)&&nowHHMM<parseInt(l.et)&&!l.cancelled;
+  const moved=l.cancelled&&/verleg|verschob|entfäl.*statt|→/i.test(l.info||'');
+  const hasExtra=!!(l.lstext||l.homework||l.examText||l.isExam||(l.info&&(l.substitution||l.cancelled)));
+  const el=document.createElement('div');el.className=`card ${col}`+(l.cancelled?' is-cancel':'')+(l.isExam&&!l.cancelled?' is-exam':'')+(l.substitution&&!l.cancelled&&!l.isExam?' is-subst':'')+(isNow?' now':'');el.style.animationDelay=delay+'s';
+  let badges='';
+  if(isNow&&!l.cancelled)badges+='<span class="badge now">Jetzt</span>';
+  if(moved)badges+='<span class="badge moved">Verlegt</span>';
+  else if(l.cancelled)badges+='<span class="badge cancel">Entfällt</span>';
+  else if(l.subjChg)badges+=`<span class="badge tausch">statt ${l.subjectOrig}</span>`;
+  else if(l.added)badges+='<span class="badge add">Zusatz</span>';
+  else if(l.substitution)badges+='<span class="badge subst">Vertretung</span>';
+  if(l.isExam&&!l.cancelled)badges+='<span class="badge exam">Schularbeit</span>';
+  if(l.roomOrig&&!l.cancelled&&!l.substitution)badges+='<span class="badge room">Raum geändert</span>';
+  if(l.homework&&!l.cancelled)badges+='<span class="badge hw">Hausübung</span>';
+  const numLabel=span.length>1?`${p0.n}–${p1.n}`:`${p0.n}.`;
+  const tName=teacherName(l.teacher),tOrig=teacherName(l.teacherOrig);
+  let teacherHtml=tName||'';if(tOrig&&tOrig!==tName&&!l.cancelled)teacherHtml=`<span class="strike-old">${tOrig}</span> → ${tName}`;
+  let roomHtml=l.room||'';if(l.roomOrig&&l.roomOrig!==l.room&&!l.cancelled)roomHtml=`<span class="strike-old">${l.roomOrig}</span> → ${l.room}`;
+  const stoff=(l.lstext&&!l.cancelled)?`<div class="meta lstext">${l.lstext}</div>`:'';
+  const infoLine=(l.info&&l.info!==l.lstext)?`<div class="meta" style="color:var(--c-blue);font-weight:600;margin-top:5px">${l.info}</div>`:'';
+  el.innerHTML=`<div class="bar"></div><div class="time"><div class="num">${numLabel}</div><div class="se">${p0.s}</div><div class="ee">${p1.e}</div></div><div class="vline"></div><div class="body"><div class="subj">${l.subject||'—'} ${badges}</div><div class="meta">${teacherHtml?`<span class="teacher-ic"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>${teacherHtml}</span>`:''}${teacherHtml&&roomHtml?'<span class="dot"></span>':''}${roomHtml?`<span class="room-ic"><svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10z"/></svg>${roomHtml}</span>`:''}${l.group?`<span class="dot"></span><span style="opacity:.8">${l.group}</span>`:''}</div>${stoff}${infoLine}</div>${hasExtra?'<button class="info-i" aria-label="Details">i</button>':''}`;
+  el.style.cursor='pointer';el.onclick=()=>openLessonDetail(l);
+  if(hasExtra){const ib=el.querySelector('.info-i');if(ib)ib.onclick=(e)=>{e.stopPropagation();openLessonDetail(l)}}
+  return el;
+}
+function openLessonDetail(l){
+  const span=periodsOf(l);const p0=PERIODS[span[0]]||PERIODS[0],p1=PERIODS[span[span.length-1]]||p0;
+  const tName=teacherName(l.teacher),tOrig=teacherName(l.teacherOrig);
+  const teach=(tOrig&&tOrig!==tName&&!l.cancelled)?`${tName} (statt ${tOrig})`:tName;
+  const room=(l.roomOrig&&l.roomOrig!==l.room&&!l.cancelled)?`${l.room} (statt ${l.roomOrig})`:l.room;
+  let status='';
+  if(l.cancelled)status='<span class="dstat cancel">Entfällt</span>';
+  else if(l.subjChg)status='<span class="dstat tausch">Statt '+l.subjectOrig+'</span>';
+  else if(l.added)status='<span class="dstat add">Zusatzstunde</span>';
+  else if(l.substitution)status='<span class="dstat subst">Vertretung</span>';
+  if(l.isExam&&!l.cancelled)status+='<span class="dstat exam">Schularbeit / Test</span>';
+  const rows=[];
+  rows.push(['Zeit',`${p0.n}.–${p1.n}. Stunde · ${p0.s}–${p1.e}`]);
+  if(l.subjChg)rows.push(['Fach',`${l.subject} (statt ${l.subjectOrig})`]);
+  if(teach)rows.push(['Lehrer',teach]);
+  if(room)rows.push(['Raum',room]);
+  if(l.group)rows.push(['Klasse',l.group]);
+  if(l.lstext)rows.push(['Stoff',l.lstext]);
+  if(l.homework)rows.push(['Hausübung',l.homework]);
+  if(l.examText)rows.push(['Prüfung',l.examText]);
+  if(l.info&&l.info!==l.lstext)rows.push(['Hinweis',l.info]);
+  const body=rows.map(([k,v])=>`<div class="drow"><div class="dk">${k}</div><div class="dv">${v}</div></div>`).join('');
+  document.getElementById('detailBody').innerHTML=`<div class="dhead"><div class="dsubj">${l.subject||'—'}</div>${status}</div>${body}`;
+  document.getElementById('detail').classList.add('open');
+}
+function closeDetail(){document.getElementById('detail').classList.remove('open')}
+function emptyState(icon,title,text){const ic={cal:'<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>',event:'<path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/>'}[icon]||'';return`<div class="empty"><div class="ei"><svg viewBox="0 0 24 24">${ic}</svg></div><h3>${title}</h3><p>${text}</p></div>`}
+
+function isCreme(s){if(!s)return false;return /^(BSP|BEW|SPO|BS[KP]|LK)/i.test(s)}
+function renderWeek(){
+  const grid=document.getElementById('weekgrid');grid.className='wgrid';grid.innerHTML='';
+  const days=weekDays();const today=new Date();
+  const rowH=SET.fontScale==='small'?66:SET.fontScale==='large'?92:80;
+  const active=new Set();
+  weekLessons.forEach(l=>{if(!days.some(d=>ymd(d)===l.date))return;periodsOf(l).forEach(pi=>active.add(pi))});
+  let periodsToShow=PERIODS.map((p,i)=>i).filter(i=>i<DAY_PERIODS);
+  if(active.size){const mx0=Math.max(...active);periodsToShow=PERIODS.map((p,i)=>i).filter(i=>i<=Math.max(mx0,DAY_PERIODS-1));
+    const mn=Math.min(...active),mx=Math.max(...active);
+    if(SET.hideFree)periodsToShow=periodsToShow.filter(i=>i>=mn&&i<=mx);
+    else periodsToShow=periodsToShow.filter(i=>i<=mx);
+  }
+  const rowOf={};periodsToShow.forEach((pi,idx)=>rowOf[pi]=idx+2);
+  const lastRow=periodsToShow.length+2;
+  grid.style.gridTemplateColumns=`44px repeat(5,1fr)`;
+  grid.style.gridTemplateRows=`auto repeat(${periodsToShow.length},${rowH}px)`;
+  const corner=document.createElement('div');corner.className='wg-corner';corner.style.gridColumn='1';corner.style.gridRow='1';grid.appendChild(corner);
+  days.forEach((d,i)=>{
+    const h=document.createElement('div');h.className='wg-dh'+(sameDay(d,today)?' today':'');
+    h.style.gridColumn=String(i+2);h.style.gridRow='1';
+    h.innerHTML=`<div class="mo">${i===0?MN[d.getMonth()]:''}</div><div class="dd">${d.getDate()}</div><div class="dn">${DN[d.getDay()]}.</div>`;
+    grid.appendChild(h);
+  });
+  periodsToShow.forEach(pi=>{
+    const p=PERIODS[pi];
+    const t=document.createElement('div');t.className='wg-tc';t.style.gridColumn='1';t.style.gridRow=String(rowOf[pi]);
+    t.innerHTML=`<div class="ts">${p.s}</div><div class="tn">${p.n}.</div><div class="te">${p.e}</div>`;
+    grid.appendChild(t);
+  });
+  days.forEach((d,di)=>{
+    if(holidays[di]){
+      const cell=document.createElement('div');cell.className='wcell';cell.style.gridColumn=String(di+2);cell.style.gridRow=`2 / ${lastRow}`;
+      const h=document.createElement('div');h.className='wholiday';h.textContent=holidays[di];cell.appendChild(h);grid.appendChild(cell);return;
+    }
+    const dayL=weekLessons.filter(l=>l.date===ymd(d));
+    const byStart={};
+    dayL.forEach(l=>{const sp=periodsOf(l);if(!sp.length)return;(byStart[sp[0]]=byStart[sp[0]]||[]).push(l)});
+    Object.keys(byStart).map(Number).forEach(start=>{
+      if(rowOf[start]===undefined)return;
+      const group=byStart[start];let last=start;
+      group.forEach(l=>{const sp=periodsOf(l);last=Math.max(last,sp[sp.length-1])});
+      group.sort((a,b)=>(a.cancelled?1:0)-(b.cancelled?1:0));
+      let endRow=(rowOf[last]!==undefined?rowOf[last]:rowOf[start])+1;
+      const cell=document.createElement('div');cell.className='wcell'+(group.length>1?' split':'');
+      cell.style.gridColumn=String(di+2);cell.style.gridRow=`${rowOf[start]} / ${endRow}`;
+      group.forEach(l=>{
+        const creme=isCreme(l.subject);const chg=(l.teacherOrig||l.roomOrig||l.subjChg)&&!l.cancelled;
+        const moved=!l.cancelled&&/verleg|verschob/i.test(l.info||'');
+        const cls=l.cancelled?'cancel':l.isExam?'exam':(l.added||l.subjChg||moved)?'added':chg?'subst':creme?'creme':'';
+        const tile=document.createElement('div');tile.className='wtile'+(cls?' '+cls:'');
+        const tShow=SET.wkTeacherFull?teacherName(l.teacher):dispCode(l.teacher);
+        const tOrg=SET.wkTeacherFull?teacherName(l.teacherOrig):dispCode(l.teacherOrig);
+        const teach=(l.teacherOrig&&!l.cancelled&&!sameTeacher(l.teacher,l.teacherOrig))?`${tShow} <s>${tOrg}</s>`:tShow;
+        const rm=(l.roomOrig&&!l.cancelled&&l.roomOrig!==l.room)?`${l.room} <s>${l.roomOrig}</s>`:l.room;
+        const hasSubj=!!l.subject;
+        const primary=hasSubj?l.subject:(tShow||'');
+        let h=`<div class="wf">${primary}</div>`;
+        if(SET.wkTeacher&&teach&&hasSubj)h+=`<div class="wte${(l.teacherOrig&&!l.cancelled)?' chg':''}">${teach}</div>`;
+        if(SET.wkRoom&&rm)h+=`<div class="wr${(l.roomOrig&&!l.cancelled)?' chg':''}">${rm}</div>`;
+        const dbl=periodsOf(l).length>1;
+        if(SET.wkClass&&l.group&&(dbl||!(l.teacherOrig||l.roomOrig)))h+=`<div class="wk">${l.group}</div>`;
+        tile.innerHTML=h;
+        tile.style.cursor='pointer';
+        tile.onclick=()=>openLessonDetail(l);
+        cell.appendChild(tile);
+      });
+      grid.appendChild(cell);
+    });
+  });
+}
+function changeWeek(dir){monday.setDate(monday.getDate()+dir*7);loadWeek()}
+function updateWeekRange(){const d=weekDays();const a=d[0],b=d[4];document.getElementById('weekRange').textContent=`${a.getDate()}. – ${b.getDate()}. ${MN[b.getMonth()]}`}
+
+document.getElementById('secret').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+document.getElementById('u').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('secret').focus()});
+document.getElementById('workerUrl').addEventListener('keydown',e=>{if(e.key==='Enter')saveWorker()});
+
+const ACCENTS=[['#ff6a00','Orange'],['#2b7cc0','Blau'],['#8e5bd9','Violett'],['#14a89a','Türkis'],['#e8536b','Rosé'],['#e0a400','Gold']];
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);store.set('untis_theme',t);const m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='dark'?'#000000':(store.get('untis_accent')||'#ff6a00'));document.querySelectorAll('#themeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.t===t))}
+function toggleSet(k,v){SET[k]=v;saveSet();render();if(typeof renderDashboard==='function'){renderDashboard();renderHomework();renderAbsences()}}
+function setStartTab(v){SET.startTab=v;saveSet();markSeg('stSeg',v)}
+function saveName(v){const n=(v||'').trim();if(n)store.set('mhw_name',n);else store.del('mhw_name');if(typeof renderDashboard==='function')renderDashboard()}
+function setFontScale(v){SET.fontScale=v;saveSet();applyFontScale();markSeg('fsSeg',v);render()}
+function setStartView(v){SET.startView=v;saveSet();markSeg('svSeg',v)}
+function markSeg(id,v){const el=document.getElementById(id);if(el)el.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===v))}
+function openSettings(){buildSwatches();buildTmap();buildAliasList();const t=document.documentElement.getAttribute('data-theme')||'dark';document.querySelectorAll('#themeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));markSeg('fsSeg',SET.fontScale);markSeg('svSeg',SET.startView);markSeg('stSeg',SET.startTab||'heute');const ni=document.getElementById('nameInput');if(ni)ni.value=store.get('mhw_name')||'';['wkTeacher','wkRoom','wkClass','wkTeacherFull','hideFree','showExams','showStoff','hideExcused'].forEach(k=>{const el=document.getElementById('sw_'+k);if(el)el.checked=!!SET[k]});document.getElementById('settings').classList.add('open')}
+function closeSettings(){document.getElementById('settings').classList.remove('open')}
+function setAccent(c){document.documentElement.style.setProperty('--orange',c);store.set('untis_accent',c);const m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',c);buildSwatches()}
+function buildSwatches(){const cur=store.get('untis_accent')||'#ff6a00';const w=document.getElementById('swatches');w.innerHTML='';ACCENTS.forEach(([c,n])=>{const s=document.createElement('div');s.className='swatch'+(c===cur?' sel':'');s.style.background=c;s.title=n;s.onclick=()=>setAccent(c);w.appendChild(s)})}
+function buildTmap(){const w=document.getElementById('tmapList');w.innerHTML='';const keys=Object.keys(CUSTOM_TEACHERS);if(!keys.length){w.innerHTML='<div style="font-size:13px;color:var(--ink-faint)">Noch keine eigenen Zuordnungen.</div>';return}keys.sort().forEach(k=>{const r=document.createElement('div');r.className='tmap-row';const c=document.createElement('span');c.className='code';c.textContent=k;const n=document.createElement('span');n.className='nm';n.textContent=CUSTOM_TEACHERS[k];const b=document.createElement('button');b.className='del';b.innerHTML='&#128465;';b.onclick=()=>{delete CUSTOM_TEACHERS[k];saveCustom();buildTmap();render()};r.appendChild(c);r.appendChild(n);r.appendChild(b);w.appendChild(r)})}
+function addTeacher(){const ce=document.getElementById('tmapCode'),ne=document.getElementById('tmapName');const c=ce.value.trim().toUpperCase(),n=ne.value.trim();if(!c||!n)return;CUSTOM_TEACHERS[c]=n;saveCustom();ce.value='';ne.value='';buildTmap();render()}
+function saveCustom(){store.set('untis_teachers_custom',JSON.stringify(CUSTOM_TEACHERS))}
+function buildAliasList(){const w=document.getElementById('aliasList');if(!w)return;w.innerHTML='';const all=Object.assign({},TEACHER_ALIAS,CUSTOM_ALIAS);const keys=Object.keys(all).sort();keys.forEach(k=>{const r=document.createElement('div');r.className='tmap-row';const c=document.createElement('span');c.className='code';c.textContent=k;const n=document.createElement('span');n.className='nm';n.textContent='→ '+all[k]+(TEACHER_ALIAS[k]&&!CUSTOM_ALIAS[k]?' (fix)':'');r.appendChild(c);r.appendChild(n);if(CUSTOM_ALIAS[k]){const b=document.createElement('button');b.className='del';b.innerHTML='&#128465;';b.onclick=()=>{delete CUSTOM_ALIAS[k];saveAlias();buildAliasList();render();lhWeekCache={}};r.appendChild(b)}w.appendChild(r)})}
+function addAlias(){const f=document.getElementById('aliasFrom'),g=document.getElementById('aliasTo');const a=f.value.trim().toUpperCase(),b=g.value.trim().replace(/^→\s*/,'').toUpperCase();if(!a||!b||a===b)return;CUSTOM_ALIAS[a]=b;saveAlias();f.value='';g.value='';buildAliasList();render();lhWeekCache={};if(typeof renderDashboard==='function')renderDashboard()}
+function saveAlias(){store.set('untis_teacher_alias',JSON.stringify(CUSTOM_ALIAS))}
+/* ============ MEHR-DATEN: volle Namen ============ */
+const DN_FULL=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+const MN_FULL=['Jänner','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+function cvar(s){return 'var(--'+colorFor(s).replace('col-','c-')+')'}
+function cvarBg(s){return 'var(--'+colorFor(s).replace('col-','c-')+'-bg)'}
+
+/* ============ TAB-NAVIGATION ============ */
+let curTab='heute';
+function refreshAll(btn){
+  if(!personId)return;
+  if(btn){btn.classList.add('spinning')}
+  upcomingLoaded=false;absLoaded=false;absLoading=false;absData=[];absFail=false;bearerToken='';
+  renderDashboard();
+  examLoaded=false;
+  Promise.allSettled([loadUpcoming(),loadWeek(),loadAbsences(),loadExams()]).then(()=>{if(btn)setTimeout(()=>btn.classList.remove('spinning'),300)});
+}
+function switchTab(name){
+  curTab=name;
+  document.querySelectorAll('.tabview').forEach(s=>s.classList.toggle('on',s.id==='tab-'+name));
+  document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
+  const v=document.getElementById('tab-'+name);
+  if(v){const sc=v.querySelector('.tab-scroll')||v.querySelector('.scroll')||v.querySelector('.weekwrap');if(sc)sc.scrollTop=0}
+  if(name==='heute')renderDashboard();
+  else if(name==='hu')renderHomework();
+  else if(name==='tests'){if(!examLoaded&&!examLoading)loadExams();renderExams()}
+  else if(name==='abs'){if(!absLoaded&&!absLoading)loadAbsences();renderAbsences()}
+  else if(name==='plan'){showLoad(false);render()}
+}
+
+/* ============ DASHBOARD-DATEN: nächste 2 Wochen ============ */
+let upcoming=[],upcomingLoaded=false;
+function flds(){return {showInfo:true,showSubstText:true,showLsText:true,showStudentgroup:true,klasseFields:['id','name'],roomFields:['id','name'],subjectFields:['id','name'],teacherFields:['id','name']}}
+async function loadUpcoming(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const start=new Date(today);start.setDate(start.getDate()-14);
+  const end=new Date(today);end.setDate(end.getDate()+13);
+  try{
+    const r=await rpc(classicPath(),'getTimetable',{options:{startDate:parseInt(ymd(start)),endDate:parseInt(ymd(end)),element:{id:personId,type:personType},...flds()}},true);
+    upcoming=mergeConsecutive(parseClassic(r||[]));
+    upcomingLoaded=true;renderDashboard();renderHomework();updateBadges();
+    loadExtras(start,end).then(ex=>{
+      let ch=false;
+      upcoming.forEach(l=>{const k=l.lessonId+'_'+l.date;
+        if(ex.hw[k]&&ex.hw[k].length){l.homework=ex.hw[k].join('\n');ch=true}
+        (ex.exams||[]).forEach(e=>{const ed=String(e.examDate||e.date||'');const es=e.subject||(e.subjects&&e.subjects[0]&&(e.subjects[0].name||e.subjects[0]))||'';if(ed===l.date&&(!es||es===l.subject)){if(!l.isExam){l.isExam=true;ch=true}if(e.name&&!l.examText)l.examText=e.name}})});
+      if(ch){renderDashboard();renderHomework();updateBadges()}
+    }).catch(()=>{});
+  }catch(e){console.error(e);upcomingLoaded=true;renderDashboard()}
+}
+function todayStr(){const n=new Date();return `${n.getFullYear()}${String(n.getMonth()+1).padStart(2,'0')}${String(n.getDate()).padStart(2,'0')}`}
+function dayLabel(dateStr){
+  const y=+dateStr.slice(0,4),m=+dateStr.slice(4,6)-1,d=+dateStr.slice(6,8);
+  const dt=new Date(y,m,d);dt.setHours(0,0,0,0);const t=new Date();t.setHours(0,0,0,0);
+  const diff=Math.round((dt-t)/86400000);
+  if(diff===0)return 'Heute';if(diff===1)return 'Morgen';
+  return `${DN[dt.getDay()]}. ${d}.${m+1}.`;
+}
+function minsUntil(hhmm,dateStr){const y=+dateStr.slice(0,4),mo=+dateStr.slice(4,6)-1,d=+dateStr.slice(6,8);const h=+String(hhmm).padStart(4,'0').slice(0,2),mi=+String(hhmm).padStart(4,'0').slice(2,4);return Math.round((new Date(y,mo,d,h,mi,0,0)-new Date())/60000)}
+
+/* Änderungen ab heute sammeln */
+function collectChanges(){
+  const src=upcoming.length?upcoming:weekLessons;const ts=todayStr();const items=[];
+  src.filter(l=>l.date>=ts).forEach(l=>{
+    const sp=periodsOf(l);const p0=PERIODS[sp[0]]||PERIODS[0],p1=PERIODS[sp[sp.length-1]]||p0;
+    const per=sp.length>1?`${p0.n}.–${p1.n}. Std`:`${p0.n}. Std`;
+    const base={sort:l.date+String(p0.n).padStart(2,'0'),subject:l.subject||'—',when:`${dayLabel(l.date)} · ${per}`};
+    const moved=l.cancelled&&/verleg|verschob|→|statt/i.test(l.info||'');
+    if(l.cancelled){
+      items.push({...base,type:moved?'verlegt':'entfall',tag:moved?'Verlegt':'Entfall',detail:l.info?l.info:'Diese Stunde entfällt.'});
+    }else if(l.subjChg){
+      const extra=l.teacherOrig?` · ${teacherName(l.teacher)}`:'';
+      items.push({...base,type:'tausch',tag:'Statt '+l.subjectOrig,detail:`<span class="old">${l.subjectOrig}</span> → ${l.subject}${extra}`});
+    }else if(l.added){
+      items.push({...base,type:'zusatz',tag:'Zusatz',detail:l.info&&l.info!==l.lstext?l.info:`Zusätzliche Stunde${l.teacher?' bei '+teacherName(l.teacher):''}${l.room?' · Raum '+l.room:''}`});
+    }else if(l.teacherOrig){
+      const a=teacherName(l.teacherOrig),b=teacherName(l.teacher);
+      items.push({...base,type:'vertret',tag:'Vertretung',detail:`<span class="old">${a}</span> → ${b}`+(l.roomOrig&&l.roomOrig!==l.room?` · Raum ${l.room}`:'')});
+    }else if(l.roomOrig&&l.roomOrig!==l.room){
+      items.push({...base,type:'raum',tag:'Raum',detail:`<span class="old">${l.roomOrig}</span> → ${l.room}`});
+    }
+    if(l.isExam&&!l.cancelled){
+      items.push({...base,type:'test',tag:'Test',detail:l.examText||(l.subject+' – Schularbeit / Test')});
+    }
+  });
+  items.sort((a,b)=>a.sort.localeCompare(b.sort));
+  return items;
+}
+function curNextLesson(){
+  const src=upcoming.length?upcoming:weekLessons;const ts=todayStr();
+  const now=new Date();const cur=now.getHours()*100+now.getMinutes();
+  const todays=src.filter(l=>l.date===ts&&!l.cancelled).sort((a,b)=>a.st.localeCompare(b.st));
+  for(const l of todays){if(cur>=parseInt(l.st)&&cur<parseInt(l.et))return{l,now:true}}
+  for(const l of todays){if(parseInt(l.st)>cur)return{l,now:false}}
+  const future=src.filter(l=>l.date>ts&&!l.cancelled).sort((a,b)=>(a.date+a.st).localeCompare(b.date+b.st));
+  if(future.length)return{l:future[0],now:false,nextDay:true};
+  return null;
+}
+function renderDashboard(){
+  const root=document.getElementById('dashBody');if(!root)return;
+  const ts=todayStr();const src=upcoming.length?upcoming:weekLessons;
+  const now=new Date();const h=now.getHours();
+  const part=h<5?'Gute Nacht':h<11?'Guten Morgen':h<14?'Hallo':h<18?'Guten Tag':'Guten Abend';
+  const name=store.get('mhw_name');
+  let html=`<div class="hero"><div class="hi">${part}${name?', '+name:''}!</div><div class="sub">${DN_FULL[now.getDay()]}, ${now.getDate()}. ${MN_FULL[now.getMonth()]}${klasseName?' · '+klasseName:''}</div></div>`;
+
+  if(!upcomingLoaded){
+    html+=`<div class="nowcard" style="background:linear-gradient(150deg,#7c8696,#5a6472)"><div class="lab">Lädt…</div><div class="sj">Stundenplan wird geladen</div></div>`;
+  }else{
+    const cn=curNextLesson();
+    if(cn){
+      const l=cn.l;const sp=periodsOf(l);const p0=PERIODS[sp[0]]||PERIODS[0],p1=PERIODS[sp[sp.length-1]]||p0;
+      const lab=cn.now?'Jetzt':(cn.nextDay?('Als Nächstes · '+dayLabel(l.date)):'Als Nächstes');
+      const cls=cn.now?'nowcard':'nowcard';
+      let chips='';
+      if(l.teacherOrig)chips+='<span class="chip">Vertretung</span>';
+      if(l.roomOrig&&l.roomOrig!==l.room)chips+='<span class="chip">Raum geändert</span>';
+      if(l.isExam)chips+='<span class="chip">Schularbeit</span>';
+      const tn=teacherName(l.teacher);
+      const bg=`background:linear-gradient(150deg,${shade(cvarRaw(l.subject),22)},${shade(cvarRaw(l.subject),-10)})`;
+      let cd='';
+      if(cn.now){const m=minsUntil(l.et,l.date);if(m>=0&&m<=180)cd=`<span class="cd">noch ${m} Min</span>`}
+      else if(!cn.nextDay){const m=minsUntil(l.st,l.date);if(m>=0&&m<=180)cd=(m<1?`<span class="cd">gleich</span>`:`<span class="cd">in ${m} Min</span>`)}
+      if(l.subjChg)chips=`<span class="chip">statt ${l.subjectOrig}</span>`+chips;
+      if(l.added)chips=`<span class="chip">Zusatzstunde</span>`+chips;
+      html+=`<div class="nowcard" style="${bg}"><div class="lab"><span>${lab}</span>${cd}</div><div class="sj">${l.subject||'—'}</div><div class="mt"><span>${p0.s}–${p1.e} · ${p0.n}.${sp.length>1?'–'+p1.n+'.':''} Std</span>${tn?`<span>${tn}</span>`:''}${l.room?`<span>Raum ${l.room}</span>`:''}</div>${chips?`<div class="chips">${chips}</div>`:''}</div>`;
+    }else{
+      html+=`<div class="nowcard free"><div class="lab">Stundenplan</div><div class="sj">Keine Stunden</div><div class="mt"><span>Aktuell ist nichts geplant.</span></div></div>`;
+    }
+  }
+
+  const ch=collectChanges();
+  html+=`<div class="dcard"><div class="dcard-h"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2zm0 4 7.5 13h-15L12 6zm-1 4v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg></span><span class="ti">Änderungen</span>${(upcomingLoaded&&ch.length)?`<span style="margin-left:auto;font-size:12.5px;font-weight:800;color:var(--c-rose)">${ch.length}</span>`:''}</div><div class="dcard-b">`;
+  if(!upcomingLoaded){html+='<div class="mini-spin"></div>'}
+  else if(!ch.length){
+    html+=`<div class="all-ok"><div class="em"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div><p>Keine Entfälle oder Vertretungen.<br>Alles läuft nach Plan.</p></div>`;
+  }else{
+    ch.slice(0,14).forEach(c=>{html+=`<div class="chg"><span class="tag ${c.type}">${c.tag}</span><div class="info"><div class="sj">${c.subject}</div><div class="dt">${c.detail}</div><div class="when">${c.when}</div></div></div>`});
+  }
+  html+=`</div></div>`;
+
+  // Nächste Schularbeiten / Tests
+  if(SET.showExams){
+    const exams=[];const seen={};
+    if(examLoaded&&examList.length){examList.filter(e=>e.date>=ts).forEach(e=>{const dd=daysUntil(e.date);const sp=e.st?periodsOf({st:e.st,et:e.et||e.st}):[];exams.push({subject:e.subject,text:e.text||examKindLabel(e.kind),when:`${dayLabel(e.date)}${sp.length?' · '+PERIODS[sp[0]].n+'. Std':''}`,cd:dd===0?'Heute':dd===1?'Morgen':'in '+dd+' Tg.',kind:e.kind})})}
+    else src.filter(l=>l.isExam&&!l.cancelled&&l.date>=ts).sort((a,b)=>(a.date+a.st).localeCompare(b.date+b.st)).forEach(l=>{
+      const k=l.date+'|'+l.subject;if(seen[k])return;seen[k]=1;
+      const sp=periodsOf(l);const p0=PERIODS[sp[0]]||PERIODS[0];
+      const y=+l.date.slice(0,4),mo=+l.date.slice(4,6)-1,d=+l.date.slice(6,8);const dt=new Date(y,mo,d);dt.setHours(0,0,0,0);const t0=new Date();t0.setHours(0,0,0,0);const dd=Math.round((dt-t0)/86400000);
+      const cd=dd===0?'Heute':dd===1?'Morgen':'in '+dd+' Tg.';
+      exams.push({subject:l.subject||'—',text:l.examText||'Schularbeit / Test',when:`${dayLabel(l.date)} · ${p0.n}. Std`,cd});
+    });
+    if((upcomingLoaded||examLoaded)&&exams.length){
+      html+=`<div class="dcard"><div class="dcard-h"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></span><span class="ti">Nächste Schularbeiten</span><button class="more" onclick="switchTab('tests')">Alle →</button></div><div class="dcard-b">`;
+      exams.slice(0,6).forEach(e=>{html+=`<div class="chg"><span class="tag test" style="width:auto;padding:5px 10px;white-space:nowrap${e.kind==='sa'?';background:#ffd72a;color:#3d3000':''}">${e.cd}</span><div class="info"><div class="sj">${e.subject}</div><div class="dt">${e.text}</div><div class="when">${e.when}</div></div></div>`});
+      html+=`</div></div>`;
+    }
+  }
+
+  const todays=src.filter(l=>l.date===ts).sort((a,b)=>a.st.localeCompare(b.st));
+  if(upcomingLoaded&&todays.length){
+    html+=`<div class="dcard"><div class="dcard-h"><span class="ic"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg></span><span class="ti">Heute</span><button class="more" onclick="switchTab('plan')">Plan →</button></div><div class="dcard-b">`;
+    todays.forEach(l=>{
+      const sp=periodsOf(l);const p0=PERIODS[sp[0]]||PERIODS[0];
+      const col=l.cancelled?'var(--c-slate)':cvar(l.subject);const tn=teacherName(l.teacher);
+      html+=`<div class="mini-l${l.cancelled?' cx':''}"><div class="pn">${p0.n}.</div><div class="bar" style="background:${col}"></div><div class="mc"><div class="ms">${l.subject||'—'}</div><div class="mm">${tn||''}${tn&&l.room?' · ':''}${l.room?'Raum '+l.room:''}${l.cancelled?' · entfällt':''}${l.isExam&&!l.cancelled?' · Schularbeit':''}</div></div><div class="tm">${p0.s}</div></div>`;
+    });
+    html+=`</div></div>`;
+  }
+
+  const stoff=src.filter(l=>l.lstext&&l.lstext.trim()&&!l.cancelled&&l.date<=ts).sort((a,b)=>(b.date+b.st).localeCompare(a.date+a.st));
+  if(SET.showStoff&&stoff.length){
+    html+=`<div class="dcard"><div class="dcard-h"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4.5 4.7v13C8 17.5 10.5 18 12 19.5"/><path d="M12 6.5C13.5 5 16 4.5 19.5 4.7v13C16 17.5 13.5 18 12 19.5"/></svg></span><span class="ti">Zuletzt durchgenommen</span><button class="more" onclick="switchTab('hu')">Alle →</button></div><div class="dcard-b">`;
+    stoff.slice(0,3).forEach(l=>{html+=`<div class="chg"><span class="tag" style="background:var(--line);color:var(--ink-soft);width:auto;padding:5px 10px;white-space:nowrap">${dayLabel(l.date)}</span><div class="info"><div class="sj">${l.subject}</div><div class="dt">${l.lstext}</div></div></div>`});
+    html+=`</div></div>`;
+  }
+  root.innerHTML=html;
+}
+/* Hilfsfarben für die Jetzt-Karte */
+function cvarRaw(s){const map={'col-amber':'#e98a1f','col-violet':'#8e5bd9','col-teal':'#14a89a','col-blue':'#2b91d6','col-rose':'#e8536b','col-lime':'#8db70f','col-slate':'#7c8696'};return map[colorFor(s)]||'#e98a1f'}
+function shade(hex,p){const n=parseInt(hex.slice(1),16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=Math.max(0,Math.min(255,r+p*1.3));g=Math.max(0,Math.min(255,g+p*1.3));b=Math.max(0,Math.min(255,b+p*1.3));return`rgb(${r|0},${g|0},${b|0})`}
+
+function renderHomework(){
+  const root=document.getElementById('huBody');if(!root)return;
+  const src=upcoming.length?upcoming:weekLessons;const ts=todayStr();
+  // Lehrstoff = eingetragener Stoff (lstext) vergangener & heutiger Stunden, neueste zuerst
+  const items=src.filter(l=>l.lstext&&l.lstext.trim()&&!l.cancelled&&l.date<=ts)
+    .sort((a,b)=>(b.date+b.st).localeCompare(a.date+a.st));
+  if(!upcomingLoaded&&!items.length){root.innerHTML='<div class="mini-spin"></div>';return}
+  if(!items.length){
+    root.innerHTML=`<div class="infobox"><div class="ii"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5V5.5zm16 0A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5V5.5z"/></svg></div><h3>Noch kein Lehrstoff</h3><p>Sobald Lehrer eintragen, was in einer Stunde durchgenommen wurde, erscheint es hier — nach Datum sortiert.</p></div>`;return;
+  }
+  // nach Tag gruppieren
+  let html='';let lastDay='';
+  items.forEach(l=>{
+    if(l.date!==lastDay){lastDay=l.date;html+=`<div style="font-size:12.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--ink-faint);margin:18px 2px 9px">${dayLabel(l.date)}</div>`}
+    const sp=periodsOf(l);const p0=PERIODS[sp[0]]||PERIODS[0],p1=PERIODS[sp[sp.length-1]]||p0;
+    const per=sp.length>1?`${p0.n}.–${p1.n}.`:`${p0.n}.`;
+    html+=`<div class="hwcard"><div class="acc" style="background:${cvar(l.subject)}"></div><div class="hb"><div class="hs">${l.subject||'—'}<span class="pill" style="background:var(--line);color:var(--ink-soft)">${per} Std</span></div><div class="ht">${l.lstext}</div></div></div>`;
+  });
+  root.innerHTML=html;
+}
+
+/* ============ ABWESENHEITEN ============ */
+let absLoaded=false,absLoading=false,absData=[],absFail=false;
+async function loadAbsences(){
+  if(absLoading)return;absLoading=true;
+  const today=new Date();
+  const sy=today.getMonth()>=8?today.getFullYear():today.getFullYear()-1;
+  const start=sy+'0901';const end=ymd(today);
+  // 1. Versuch: Mobile-API (getStudentAbsences2017) – funktioniert mit dem Geheimschlüssel-Login
+  try{
+    const sD=new Date(sy,8,1),eD=new Date(today);eD.setDate(eD.getDate()+1);
+    const r=await mobileCall('getStudentAbsences2017',{startDate:isoDate(sD),endDate:isoDate(eD),includeExcused:true,includeUnExcused:true});
+    const list=(r&&(r.absences||r.data&&r.data.absences))||(Array.isArray(r)?r:null);
+    if(Array.isArray(list)){
+      absData=list.map(a=>{const s=fromIsoDT(a.startDateTime||a.startDate),e=fromIsoDT(a.endDateTime||a.endDate);
+        const exc=a.excused===true||a.isExcused===true||!!(a.excuse&&(a.excuse.excuseStatus||a.excuse.id));
+        const reason=(a.reason&&(a.reason.longName||a.reason.name))||a.reasonText||a.text||'';
+        return {startDate:s.date,endDate:e.date,startTime:s.hhmm,endTime:e.hhmm,reason:reason||'Abwesend',isExcused:exc,excuseText:(a.excuse&&(a.excuse.text||a.excuse.excuseStatus&&a.excuse.excuseStatus.longName))||'',raw:a}});
+      absLoaded=true;absLoading=false;absFail=false;renderAbsences();updateBadges();return;
+    }
+  }catch(e){}
+  const paths=[
+    `/WebUntis/api/classreg/absences/students?startDate=${start}&endDate=${end}&studentId=${personId}&excuseStatusId=-1`,
+    `/WebUntis/api/classreg/absences/students?startDate=${start}&endDate=${end}&excuseStatusId=-1`,
+    `/WebUntis/api/rest/view/v1/students/${personId}/absences?startDate=${start}&endDate=${end}`
+  ];
+  for(const p of paths){
+    try{
+      const d=await restGet(p,true);
+      const root=(d&&d.data)?d.data:d;
+      let list=(root&&(root.absences||root.records))||(Array.isArray(root)?root:null);
+      if(Array.isArray(list)){absData=list;absLoaded=true;absLoading=false;renderAbsences();updateBadges();return}
+    }catch(e){}
+  }
+  absFail=true;absLoaded=true;absLoading=false;renderAbsences();
+}
+function fmtAbsDate(v){const s=String(v);const m=s.match(/(\d{4})-?(\d{2})-?(\d{2})/);if(!m)return null;return{d:+m[3],mo:+m[2]-1,y:+m[1]}}
+function hhmmFromAbs(v){if(v==null||v==='')return '';const s=String(v);if(/^\d{3,4}$/.test(s)){const p=s.padStart(4,'0');return p.slice(0,2)+':'+p.slice(2)}const m=s.match(/T?(\d{2}):(\d{2})/);return m?m[1]+':'+m[2]:''}
+function renderAbsences(){
+  const root=document.getElementById('absBody');if(!root)return;
+  if(!absLoaded){root.innerHTML='<div class="mini-spin"></div>';return}
+  if(absFail||!absData.length){
+    root.innerHTML=`<div class="infobox"><div class="ii"><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><h3>${absFail?'Nicht abrufbar':'Keine Abwesenheiten'}</h3><p>${absFail?'Die Fehlzeiten ließen sich nicht laden — WebUntis gibt diesen Bereich für externe Apps oft nicht frei. Du findest sie aber direkt in WebUntis.':'Im aktuellen Schuljahr sind keine Abwesenheiten erfasst. 🎉'}</p><a class="lnk" href="https://hakwels.webuntis.com" target="_blank" rel="noopener">In WebUntis öffnen <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5h-2v5H5V5z"/></svg></a></div>`;return;
+  }
+  const all=[...absData].sort((a,b)=>String(b.startDate||b.date||'').localeCompare(String(a.startDate||a.date||'')));
+  const isExc=a=>a.isExcused===true||a.excused===true||(a.excuseStatusId&&a.excuseStatusId>0)||(a.excuse&&a.excuse.excuseStatus);
+  let open=0;all.forEach(a=>{if(!isExc(a))open++});
+  const arr=SET.hideExcused?all.filter(a=>!isExc(a)):all;
+  let rows='';
+  arr.forEach(a=>{
+    const sd=fmtAbsDate(a.startDate||a.date||'');
+    const dd=sd?`<div class="d">${sd.d}</div><div class="mo">${MN[sd.mo]||''}</div>`:`<div class="d">–</div>`;
+    const reason=a.reason||a.absenceReason||a.text||a.name||(a.studentReason)||'Abwesend';
+    const st=hhmmFromAbs(a.startTime),et=hhmmFromAbs(a.endTime);
+    const timeStr=(st&&et)?`${st}–${et} Uhr`:'';
+    const excused=isExc(a);
+    rows+=`<div class="abscard"><div class="ad">${dd}</div><div class="ab"><div class="at">${reason}</div>${timeStr?`<div class="am">${timeStr}</div>`:''}<span class="stt ${excused?'ok':'open'}">${excused?'Entschuldigt':'Offen'}</span></div></div>`;
+  });
+  if(!arr.length){root.innerHTML=`<div class="infobox"><div class="ii"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div><h3>Alles entschuldigt</h3><p>Es gibt keine offenen Abwesenheiten. 🎉</p></div>`;return}
+  const summary=`<div style="font-size:14px;color:var(--ink-soft);font-weight:500;padding:0 2px 14px">${all.length} ${all.length===1?'Eintrag':'Einträge'}${open?` · <span style="color:var(--c-rose);font-weight:700">${open} offen</span>`:' · alle entschuldigt ✓'}</div>`;
+  root.innerHTML=summary+rows;
+}
+
+/* Badges in der Tab-Leiste */
+/* ============ SCHULARBEITEN & TESTS ============ */
+let examList=[],examLoaded=false,examLoading=false,examFilter='alle';
+function examKind(txt){const s=String(txt||'').toLowerCase();if(/schularbeit|\bsa\b|klausur/.test(s))return 'sa';if(/lzk|smüp|smuep|mitarbeitsüberpr|wiederholung|schulübung|\bsü\b/.test(s))return 'lzk';return 'test'}
+function examKindLabel(k){return k==='sa'?'Schularbeit':k==='lzk'?'LZK / Mitarbeitsüberprüfung':'Test'}
+function addExamFromLesson(l,out,seen){const key=l.date+'|'+(l.subject||'').toUpperCase();if(seen[key])return;seen[key]=1;const txt=l.examText||l.info||'';out.push({date:l.date,st:l.st,et:l.et,subject:l.subject||'—',kind:examKind(txt+' '+(l.examText||'')),text:(l.examText&&l.examText!==l.subject)?l.examText:(l.info&&l.info!==l.lstext?l.info:''),teacher:l.teacher,room:l.room,src:'plan'})}
+async function loadExams(btn){
+  if(examLoading)return;examLoading=true;if(btn)btn.classList.add('spinning');
+  const today=new Date();today.setHours(0,0,0,0);
+  const sD=new Date(today);sD.setDate(sD.getDate()-90);const eD=new Date(today);eD.setDate(eD.getDate()+180);
+  const out=[],seen={};
+  // 1) Mobile-API getExams2017
+  try{
+    const r=await mobileCall('getExams2017',{id:personId,type:personType===1?'CLASS':'STUDENT',startDate:isoDate(sD),endDate:isoDate(eD)});
+    const list=(r&&(r.exams||r.data&&r.data.exams))||[];
+    list.forEach(e=>{const s=fromIsoDT(e.startDateTime||e.examDate||e.date),en=fromIsoDT(e.endDateTime||e.examDate||e.date);
+      const subj=(e.subjectId&&subjMap[e.subjectId])||e.subject||(e.subjects&&e.subjects[0]&&(e.subjects[0].name||e.subjects[0]))||'';
+      const typ=(e.examType&&(e.examType.longName||e.examType.name||e.examType))||e.examTypeLongName||e.examTypeName||'';
+      const text=e.text||e.name||'';
+      const key=s.date+'|'+String(subj).toUpperCase();if(!s.date||seen[key])return;seen[key]=1;
+      out.push({date:s.date,st:s.hhmm,et:en.hhmm,subject:subj||'—',kind:examKind(typ+' '+text),text:[typ,text].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(' · '),teacher:(e.teacherIds||[]).map(id=>teacherMap[id]||'').filter(Boolean).join('/')||(e.teachers||[]).map(x=>x.name||x).join('/'),room:(e.roomIds||[]).map(id=>roomMap[id]||'').filter(Boolean).join('/')||(e.rooms||[]).map(x=>x.name||x).join('/'),src:'api'});
+    });
+  }catch(e){}
+  // 2) Web-REST als Fallback
+  if(!out.length){try{const d=await restGet(`/WebUntis/api/exams?startDate=${ymd(sD)}&endDate=${ymd(eD)}`,true);const root=(d&&d.data)?d.data:d;((root&&(root.exams||root.records))||[]).forEach(e=>{const ed=String(e.examDate||e.date||'').replace(/-/g,'');const subj=e.subject||(e.subjects&&e.subjects[0]&&(e.subjects[0].name||e.subjects[0]))||'';const key=ed+'|'+String(subj).toUpperCase();if(!ed||seen[key])return;seen[key]=1;out.push({date:ed,st:String(e.startTime||'').padStart(4,'0'),et:String(e.endTime||'').padStart(4,'0'),subject:subj||'—',kind:examKind((e.examType||'')+' '+(e.name||'')),text:[e.examType,e.name,e.text].filter(Boolean).join(' · '),teacher:(e.teachers||[]).map(x=>x.name||x).join('/'),room:(e.rooms||[]).map(x=>x.name||x).join('/'),src:'rest'})})}catch(e){}}
+  // 3) Aus dem Stundenplan (gelb markiert / Text enthält Test, Schularbeit …)
+  [...(upcoming||[]),...(weekLessons||[])].filter(l=>l.isExam&&!l.cancelled).forEach(l=>addExamFromLesson(l,out,seen));
+  out.sort((a,b)=>(a.date+a.st).localeCompare(b.date+b.st));
+  examList=out;examLoaded=true;examLoading=false;if(btn)setTimeout(()=>btn.classList.remove('spinning'),300);
+  // Stunden im Plan gelb markieren, wenn eine Prüfung bekannt ist
+  let ch=false;[...(upcoming||[]),...(weekLessons||[])].forEach(l=>{const m=out.find(x=>x.date===l.date&&x.subject.toUpperCase()===(l.subject||'').toUpperCase()&&x.src!=='plan');if(m&&!l.isExam){l.isExam=true;l.examText=m.text;ch=true}});
+  if(ch){render()}
+  renderExams();renderDashboard();updateBadges();
+}
+function setExFilter(f){examFilter=f;document.querySelectorAll('#exFilters button').forEach(b=>b.classList.toggle('on',b.dataset.f===f));renderExams()}
+function daysUntil(dateStr){const y=+dateStr.slice(0,4),mo=+dateStr.slice(4,6)-1,d=+dateStr.slice(6,8);const dt=new Date(y,mo,d);dt.setHours(0,0,0,0);const t0=new Date();t0.setHours(0,0,0,0);return Math.round((dt-t0)/86400000)}
+function examCard(e,past){
+  const dd=daysUntil(e.date);const cdB=past?Math.abs(dd):dd;const cdS=past?(dd===0?'heute':'Tg. her'):(dd===0?'heute':dd===1?'morgen':'Tage');
+  const sp=e.st?periodsOf({st:e.st,et:e.et||e.st}):[];const per=sp.length?`${PERIODS[sp[0]].n}.${sp.length>1?'–'+PERIODS[sp[sp.length-1]].n+'.':''} Std`:'';
+  const time=e.st?`${e.st.slice(0,2)}:${e.st.slice(2)}${e.et?'–'+e.et.slice(0,2)+':'+e.et.slice(2):''}`:'';
+  const dL=(()=>{const y=+e.date.slice(0,4),mo=+e.date.slice(4,6)-1,d=+e.date.slice(6,8);const x=new Date(y,mo,d);return `${DN_FULL[x.getDay()]}, ${d}. ${MN[mo]}`})();
+  const tn=teacherName(e.teacher);
+  return `<div class="excard ${e.kind}${past?' past':''}"><div class="cd"><b>${dd===0?'!':cdB}</b><span>${cdS}</span></div><div class="bd"><div class="sj">${e.subject}<span class="ty">${examKindLabel(e.kind)}</span></div>${e.text?`<div class="tx">${e.text}</div>`:''}<div class="mt"><span>${dL}</span>${per?`<span class="dot"></span><span>${per}</span>`:''}${time?`<span class="dot"></span><span>${time}</span>`:''}${e.room?`<span class="dot"></span><span>Raum ${e.room}</span>`:''}${tn?`<span class="dot"></span><span>${tn}</span>`:''}</div></div></div>`;
+}
+function renderExams(){
+  const root=document.getElementById('exBody');if(!root)return;
+  if(!examLoaded){root.innerHTML='<div class="mini-spin"></div>';return}
+  const ts=todayStr();
+  let up=examList.filter(e=>e.date>=ts),past=examList.filter(e=>e.date<ts).reverse();
+  if(examFilter==='sa'){up=up.filter(e=>e.kind==='sa');past=past.filter(e=>e.kind==='sa')}
+  if(examFilter==='test'){up=up.filter(e=>e.kind!=='sa');past=past.filter(e=>e.kind!=='sa')}
+  let html='';
+  if(examFilter==='past'){
+    html+=past.length?past.map(e=>examCard(e,true)).join(''):emptyState('cal','Nichts Vergangenes','In den letzten 3 Monaten ist keine Prüfung eingetragen.');
+  }else{
+    const week=up.filter(e=>daysUntil(e.date)<=7),later=up.filter(e=>daysUntil(e.date)>7);
+    if(!up.length)html+=emptyState('cal','Keine Prüfungen eingetragen','Sobald in WebUntis eine Schularbeit oder ein Test steht (oder im Stundenplan gelb markiert ist), erscheint sie hier.');
+    if(week.length)html+='<div class="exsec">Diese Woche</div>'+week.map(e=>examCard(e,false)).join('');
+    if(later.length)html+='<div class="exsec">Danach</div>'+later.map(e=>examCard(e,false)).join('');
+    if(past.length&&examFilter==='alle')html+=`<div class="exsec">Vergangen · ${past.length}</div>`+past.slice(0,3).map(e=>examCard(e,true)).join('')+(past.length>3?`<button class="more" style="display:block;margin:4px auto 0;background:none;border:none;color:var(--orange);font-weight:700;font-family:inherit;cursor:pointer" onclick="setExFilter('past')">Alle vergangenen anzeigen →</button>`:'');
+  }
+  root.innerHTML=html;
+}
+function updateBadges(){
+  const nt=document.getElementById('nbTests');if(nt){const ts=todayStr();const c=examLoaded?examList.filter(e=>e.date>=ts&&daysUntil(e.date)<=7).length:0;if(c){nt.textContent=c;nt.classList.add('show')}else nt.classList.remove('show')}
+  const ch=collectChanges();const nb=document.getElementById('nbHeute');
+  if(nb){if(upcomingLoaded&&ch.length){nb.textContent=ch.length>9?'9+':ch.length;nb.classList.add('show')}else nb.classList.remove('show')}
+}
+
+/* ============ LEHRERPLAN (aus Klassenplänen rekonstruiert) ============ */
+let teacherIdx=null, classList=null, lhWeekCache={}, lehrerMonday=getMonday(new Date()), lehrerSel=null, lhBusy=false, lhFilter='alle', lhView='week', lhDay=0, lhFav=[];
+try{lhFav=JSON.parse(store.get('mhw_fav_teachers')||'[]')}catch{lhFav=[]}
+function saveFav(){store.set('mhw_fav_teachers',JSON.stringify(lhFav))}
+function isFav(ab){return lhFav.includes(ab)}
+function toggleFavOf(ab,ev){if(ev){ev.stopPropagation()}const i=lhFav.indexOf(ab);if(i>=0)lhFav.splice(i,1);else lhFav.push(ab);saveFav();renderLehrerList(document.getElementById('lhSearch').value);updateStar()}
+function toggleFav(){if(!lehrerSel)return;toggleFavOf(lehrerSel)}
+function updateStar(){const s=document.getElementById('lhStar');if(s)s.classList.toggle('on',!!lehrerSel&&isFav(lehrerSel))}
+function myTeachers(){const s=new Set();[...(weekLessons||[]),...(upcoming||[])].forEach(l=>String(l.teacher||'').split('/').forEach(t=>{t=dispCode(t.trim());if(t)s.add(t.toUpperCase())}));return s}
+function buildTeacherIndex(){
+  teacherIdx=[];const seen={};
+  const add=ab=>{ab=dispCode(String(ab||'').trim());if(!ab)return;const k=ab.toUpperCase();if(seen[k])return;seen[k]=1;teacherIdx.push({abbr:ab,name:teacherName(ab)})};
+  Object.keys(teacherMap||{}).forEach(id=>add(teacherMap[id]));
+  // Lehrer aus den eigenen Stunden immer dabei (auch wenn die Schule die Liste nicht freigibt)
+  myTeachers().forEach(add);
+  // Favoriten ebenfalls
+  lhFav.forEach(add);
+  teacherIdx.sort((a,b)=>a.abbr.localeCompare(b.abbr,'de'));
+}
+function openLehrer(){
+  buildTeacherIndex();lehrerSel=null;lehrerMonday=getMonday(new Date());lhFilter='alle';
+  document.getElementById('lehrer').classList.add('open');
+  document.querySelectorAll('#lhFilters button').forEach(b=>b.classList.toggle('on',b.dataset.f==='alle'));
+  showLehrerList();renderLehrerList('');
+  const inp=document.getElementById('lhSearch');if(inp){inp.value='';setTimeout(()=>inp.focus(),120)}
+  // Woche im Hintergrund vorladen, damit "Jetzt im Unterricht" & Fach-Suche sofort gehen
+  ensureWeek().then(()=>{if(!lehrerSel)renderLehrerList(document.getElementById('lhSearch').value)}).catch(()=>{});
+}
+function closeLehrer(){document.getElementById('lehrer').classList.remove('open')}
+function showLehrerList(){document.getElementById('lhListView').style.display='flex';document.getElementById('lhDetailView').style.display='none'}
+function showLehrerDetail(){document.getElementById('lhListView').style.display='none';document.getElementById('lhDetailView').style.display='flex'}
+function setLhFilter(f){lhFilter=f;document.querySelectorAll('#lhFilters button').forEach(b=>b.classList.toggle('on',b.dataset.f===f));renderLehrerList(document.getElementById('lhSearch').value)}
+function nowState(ab){ // {state:'now'|'next'|'free'|'none', text}
+  const key=ymd(getMonday(new Date()));const byT=lhWeekCache[key];if(!byT)return null;
+  const ls=(byT[ab.toUpperCase()]||[]).filter(l=>l.date===todayStr()&&!l.cancelled).sort((a,b)=>a.st.localeCompare(b.st));
+  if(!ls.length)return {state:'none',text:'heute frei'};
+  const cur=new Date().getHours()*100+new Date().getMinutes();
+  const nowL=ls.find(l=>cur>=parseInt(l.st)&&cur<parseInt(l.et));
+  if(nowL)return {state:'now',text:`jetzt ${nowL.room||''}${nowL.group?' · '+nowL.group:''}`.trim()};
+  const nextL=ls.find(l=>parseInt(l.st)>cur);
+  if(nextL){const sp=periodsOf(nextL);const p0=PERIODS[sp[0]]||PERIODS[0];return {state:'free',text:`frei · ab ${p0.s} ${nextL.room||''}`}}
+  return {state:'none',text:'heute fertig'};
+}
+function renderLehrerList(q){
+  const box=document.getElementById('lhList');if(!box)return;
+  if(!teacherIdx||!teacherIdx.length){box.innerHTML='<div class="lh-empty">Keine Lehrerliste verfügbar.<br>Diese Schule gibt die Lehrerdaten für deinen Login evtl. nicht frei.</div>';return}
+  const qq=String(q||'').trim().toLowerCase();
+  const key=ymd(getMonday(new Date()));const byT=lhWeekCache[key];
+  const my=myTeachers();
+  let items=teacherIdx.filter(t=>{
+    if(lhFilter==='fav'&&!isFav(t.abbr))return false;
+    if(lhFilter==='meine'&&!my.has(t.abbr.toUpperCase()))return false;
+    if(lhFilter==='jetzt'||lhFilter==='frei'){const s=nowState(t.abbr);if(!s)return false;if(lhFilter==='jetzt'&&s.state!=='now')return false;if(lhFilter==='frei'&&s.state!=='free')return false}
+    if(!qq)return true;
+    if(t.abbr.toLowerCase().includes(qq)||(t.name&&t.name.toLowerCase().includes(qq)))return true;
+    // Fach- / Raum- / Klassensuche über die gecachte Woche
+    if(byT){const ls=byT[t.abbr.toUpperCase()]||[];if(ls.some(l=>(l.subject||'').toLowerCase().includes(qq)||(l.room||'').toLowerCase()===qq||(l.group||'').toLowerCase().includes(qq)))return true}
+    return false;
+  });
+  if(!items.length){box.innerHTML=`<div class="lh-empty">${(lhFilter==='jetzt'||lhFilter==='frei')&&!byT?'Stundenpläne werden geladen…':'Kein Lehrer gefunden.'}</div>`;return}
+  const row=t=>{
+    const s=byT?nowState(t.abbr):null;
+    const ls=byT?(byT[t.abbr.toUpperCase()]||[]):[];
+    const subj=[...new Set(ls.map(l=>l.subject).filter(Boolean))].slice(0,4).join(' · ');
+    const stHtml=s?`<span class="st ${s.state==='now'?'on':'off'}">${s.text}</span>`:'';
+    return `<div class="lh-item" onclick="selectLehrer('${t.abbr}')"><span class="ab">${t.abbr}</span><span class="meta"><span class="nm">${(t.name&&t.name!==t.abbr)?t.name:'&nbsp;'}</span>${subj?`<span class="sm">${subj}</span>`:''}</span>${stHtml}<button class="fav${isFav(t.abbr)?' on':''}" onclick="toggleFavOf('${t.abbr}',event)">★</button></div>`;
+  };
+  let html='';
+  if(lhFilter==='alle'&&!qq){
+    const favs=items.filter(t=>isFav(t.abbr));const mine=items.filter(t=>!isFav(t.abbr)&&my.has(t.abbr.toUpperCase()));const rest=items.filter(t=>!isFav(t.abbr)&&!my.has(t.abbr.toUpperCase()));
+    if(favs.length)html+='<div class="lh-sec">★ Favoriten</div>'+favs.map(row).join('');
+    if(mine.length)html+='<div class="lh-sec">Meine Lehrer</div>'+mine.map(row).join('');
+    if(rest.length)html+='<div class="lh-sec">Alle Lehrer</div>'+rest.map(row).join('');
+  }else html=items.map(row).join('');
+  box.innerHTML=html;
+}
+function filterLehrer(v){renderLehrerList(v)}
+function selectLehrer(abbr){
+  lehrerSel=abbr;lehrerMonday=getMonday(new Date());lhDay=Math.min(4,Math.max(0,new Date().getDay()-1));
+  showLehrerDetail();
+  const t=(teacherIdx||[]).find(x=>x.abbr===abbr);
+  document.getElementById('lhAb').textContent=abbr;
+  document.getElementById('lhNm').textContent=(t&&t.name&&t.name!==abbr)?t.name:'';
+  const al=Object.keys(TEACHER_ALIAS).concat(Object.keys(CUSTOM_ALIAS)).filter(k=>(CUSTOM_ALIAS[k]||TEACHER_ALIAS[k])===abbr);
+  document.getElementById('lhSub').textContent=al.length?`auch als ${al.join(', ')} geführt`:'';
+  updateStar();showLehrerWeek();
+}
+function setLhView(v){lhView=v;document.querySelectorAll('#lhSeg button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));document.getElementById('lhWeekWrap').style.display=v==='week'?'':'none';document.getElementById('lhDayWrap').style.display=v==='day'?'':'none';if(v==='day')renderLehrerDay()}
+function lehrerWeek(dir){if(lhBusy)return;lehrerMonday.setDate(lehrerMonday.getDate()+dir*7);showLehrerWeek()}
+function lehrerToday(){if(lhBusy)return;lehrerMonday=getMonday(new Date());lhDay=Math.min(4,Math.max(0,new Date().getDay()-1));showLehrerWeek()}
+function lehrerDays(){const a=[];for(let i=0;i<5;i++){const d=new Date(lehrerMonday);d.setDate(d.getDate()+i);a.push(d)}return a}
+async function loadClasses(){
+  if(classList&&classList.length)return classList;
+  try{
+    const r=await rpc(classicPath(),'getKlassen',[],true);
+    if(Array.isArray(r)&&r.length){classList=r.map(k=>({id:k.id,name:k.name||k.longName||('Kl '+k.id)}));return classList}
+  }catch(e){}
+  classList=Object.keys(klasseMap||{}).map(id=>({id:parseInt(id),name:klasseMap[id]}));
+  return classList;
+}
+function mergeLehrer(lessons){
+  const key=l=>`${l.date}|${l.subject}|${l.room}|${l.group}|${l.cancelled?'C':''}`;
+  const arr=[...lessons].sort((a,b)=>a.date.localeCompare(b.date)||a.st.localeCompare(b.st));
+  const out=[];
+  for(const l of arr){
+    const lp=periodsOf(l);if(!lp.length){out.push({...l});continue}
+    let merged=false;
+    for(const m of out){if(key(m)===key(l)){const mp=periodsOf(m);if(lp[0]===mp[mp.length-1]+1||l.st===m.et){if(parseInt(l.et)>parseInt(m.et))m.et=l.et;merged=true;break}}}
+    if(!merged)out.push({...l});
+  }
+  return out;
+}
+async function ensureWeek(){
+  const key=ymd(lehrerMonday);
+  if(lhWeekCache[key])return lhWeekCache[key];
+  const classes=await loadClasses();
+  if(!classes.length)throw new Error('NO_CLASSES');
+  const days=lehrerDays();const sd=parseInt(ymd(days[0])),ed=parseInt(ymd(days[4]));
+  const byT={};const seen={};let done=0;const total=classes.length;
+  const setP=()=>{const f=document.getElementById('lhProg');if(f)f.style.width=Math.round(done/total*100)+'%';const t=document.getElementById('lhProgTxt');if(t)t.textContent=`Stundenpläne laden… ${done}/${total} Klassen`};
+  const chunk=6;
+  for(let i=0;i<classes.length;i+=chunk){
+    await Promise.all(classes.slice(i,i+chunk).map(async cl=>{
+      try{
+        const r=await rpc(classicPath(),'getTimetable',{options:{startDate:sd,endDate:ed,element:{id:cl.id,type:1},...flds()}},true);
+        parseClassic(r||[]).forEach(l=>{
+          if(!l.teacher)return;
+          String(l.teacher).split('/').forEach(tk=>{tk=dispCode(tk.trim()).toUpperCase();if(!tk)return;
+            const dk=`${tk}|${l.date}|${l.st}|${l.et}|${l.subject}|${l.room}`;if(seen[dk])return;seen[dk]=1;
+            (byT[tk]=byT[tk]||[]).push(l);
+          });
+        });
+      }catch(e){}
+      done++;setP();
+    }));
+  }
+  Object.keys(byT).forEach(t=>{byT[t]=mergeLehrer(byT[t])});
+  lhWeekCache[key]=byT;
+  return byT;
+}
+function rangesOf(pis){const o=[];let s=null,e=null;[...pis].sort((a,b)=>a-b).forEach(i=>{if(s===null){s=e=i}else if(i===e+1){e=i}else{o.push([s,e]);s=e=i}});if(s!==null)o.push([s,e]);return o}
+function rangeLabel(r){return r[0]===r[1]?PERIODS[r[0]].n+'.':PERIODS[r[0]].n+'.–'+PERIODS[r[1]].n+'.'}
+function lhLessons(){const byT=lhWeekCache[ymd(lehrerMonday)]||{};return byT[String(lehrerSel||'').toUpperCase()]||[]}
+async function showLehrerWeek(){
+  if(!lehrerSel)return;
+  const grid=document.getElementById('lhGrid'),sum=document.getElementById('lhToday');
+  const days=lehrerDays();
+  document.getElementById('lhRange').textContent=`${days[0].getDate()}.${days[0].getMonth()+1}. – ${days[4].getDate()}.${days[4].getMonth()+1}.`;
+  sum.style.display='none';document.getElementById('lhStats').innerHTML='';
+  const key=ymd(lehrerMonday);
+  if(!lhWeekCache[key]){
+    lhBusy=true;grid.className='';
+    grid.innerHTML=`<div class="lh-load"><div class="lh-loadtxt" id="lhProgTxt">Stundenpläne laden…</div><div class="lh-bar"><div class="lh-barfill" id="lhProg"></div></div><div class="lh-loadsub">Alle Klassen werden durchsucht – das dauert einen Moment. Danach geht's schnell.</div></div>`;
+    try{await ensureWeek()}catch(e){lhBusy=false;grid.className='';grid.innerHTML=`<div class="lh-empty">${/NO_CLASSES/.test(e.message||'')?'Keine Klassenliste verfügbar – diese Schule gibt sie für deinen Login nicht frei.':'Konnte die Stundenpläne nicht laden. Bitte später erneut versuchen.'}</div>`;return}
+    lhBusy=false;
+  }
+  const lessons=lhLessons();
+  renderLehrerWeek(lessons);renderLehrerToday(lessons);renderLehrerStats(lessons);
+  if(lhView==='day')renderLehrerDay();
+}
+function renderLehrerStats(lessons){
+  const box=document.getElementById('lhStats');if(!box)return;
+  const live=lessons.filter(l=>!l.cancelled);
+  const hrs=live.reduce((s,l)=>s+periodsOf(l).length,0);
+  const cnt=(k)=>{const m={};live.forEach(l=>{const v=l[k];if(v)m[v]=(m[v]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1]).map(e=>e[0])};
+  const rooms=cnt('room'),groups=cnt('group'),subs=cnt('subject');
+  const canc=lessons.filter(l=>l.cancelled).reduce((s,l)=>s+periodsOf(l).length,0);
+  const evening=live.some(l=>periodsOf(l).some(pi=>pi>=DAY_PERIODS));
+  let h=`<span><b>${hrs}</b> Std</span>`;
+  if(subs.length)h+=`<span>${subs.slice(0,3).join(', ')}${subs.length>3?' …':''}</span>`;
+  if(groups.length)h+=`<span><b>${groups.length}</b> Klassen</span>`;
+  if(rooms.length)h+=`<span>meist <b>${rooms[0]}</b></span>`;
+  if(canc)h+=`<span style="color:var(--c-rose)">${canc} entfallen</span>`;
+  if(evening)h+=`<span>Abendschule</span>`;
+  box.innerHTML=h;
+}
+function renderLehrerToday(lessons){
+  const sum=document.getElementById('lhToday');if(!sum)return;
+  const ts=todayStr();const now=new Date();const cur=now.getHours()*100+now.getMinutes();
+  if(!lehrerDays().some(d=>ymd(d)===ts)){sum.style.display='none';return}
+  sum.style.display='block';
+  const todays=lessons.filter(l=>l.date===ts&&!l.cancelled).sort((a,b)=>a.st.localeCompare(b.st));
+  if(!todays.length){sum.className='lh-today off';sum.innerHTML=`<b>${lehrerSel}</b> hat heute keine Stunde im Plan.`;return}
+  const nowL=todays.find(l=>cur>=parseInt(l.st)&&cur<parseInt(l.et));
+  const nextL=todays.find(l=>parseInt(l.st)>cur);
+  // Freistunden heute (Lücken zwischen Stunden) = gute Zeit, um hinzugehen
+  const occ=new Set();todays.forEach(l=>periodsOf(l).forEach(pi=>occ.add(pi)));
+  const mn=Math.min(...occ),mx=Math.max(...occ);const gp=[];for(let pi=mn;pi<=mx;pi++)if(!occ.has(pi))gp.push(pi);const gaps=rangesOf(gp).map(rangeLabel);
+  const first=PERIODS[periodsOf(todays[0])[0]],last=PERIODS[periodsOf(todays[todays.length-1]).slice(-1)[0]];
+  let main='';
+  if(nowL){const sp=periodsOf(nowL);const p1=PERIODS[sp[sp.length-1]]||PERIODS[0];sum.className='lh-today on';main=`Jetzt: <b>${nowL.subject||'—'}</b> in <b>${nowL.room||'?'}</b>${nowL.group?' · '+nowL.group:''} · bis ${p1.e}`;}
+  else if(nextL){const sp=periodsOf(nextL);const p0=PERIODS[sp[0]]||PERIODS[0];sum.className='lh-today on';main=`<b>Gerade frei.</b> Als Nächstes: <b>${nextL.subject||'—'}</b> in <b>${nextL.room||'?'}</b>${nextL.group?' · '+nextL.group:''} · ab ${p0.s}`;}
+  else{sum.className='lh-today off';main=`<b>${lehrerSel}</b> hat heute keine Stunde mehr (letzte bis ${last.e}).`;}
+  const extra=`<span class="gap">Heute ${first.s}–${last.e} · ${todays.length} Stunden${gaps.length?' · Freistunde '+gaps.join(', '):''}</span>`;
+  sum.innerHTML=main+extra;
+}
+function renderLehrerDay(){
+  const strip=document.getElementById('lhDayStrip'),list=document.getElementById('lhDayList');if(!strip||!list)return;
+  const days=lehrerDays();const today=new Date();
+  strip.innerHTML='';days.forEach((d,i)=>{const c=document.createElement('div');c.className='daychip'+(i===lhDay?' on':'')+(sameDay(d,today)?' today':'');c.innerHTML=`<div class="dn">${DN[d.getDay()]}</div><div class="dd">${d.getDate()}</div>`;c.onclick=()=>{lhDay=i;renderLehrerDay()};strip.appendChild(c)});
+  const key=ymd(days[lhDay]);const ls=lhLessons().filter(l=>l.date===key).sort((a,b)=>a.st.localeCompare(b.st));
+  list.innerHTML='';
+  if(!ls.length){list.innerHTML=emptyState('cal','Keine Stunden',`${lehrerSel} hat an diesem Tag nichts im Plan.`);return}
+  const occ={};ls.forEach(l=>{occ[periodsOf(l)[0]]=1});
+  const pis=ls.map(l=>periodsOf(l)[0]);const mn=Math.min(...pis),mx=Math.max(...ls.map(l=>periodsOf(l).slice(-1)[0]));
+  const covered=new Set();ls.forEach(l=>periodsOf(l).forEach(pi=>covered.add(pi)));
+  let delay=0;
+  for(let pi=mn;pi<=mx;pi++){
+    const here=ls.filter(l=>periodsOf(l)[0]===pi);
+    if(!here.length){if(!covered.has(pi)){let pe=pi;while(pe+1<=mx&&!covered.has(pe+1))pe++;const g=document.createElement('div');g.className='freegap';g.textContent=(pe===pi?`Freistunde · ${PERIODS[pi].n}. Stunde · ${PERIODS[pi].s}–${PERIODS[pi].e}`:`Frei · ${PERIODS[pi].n}.–${PERIODS[pe].n}. Stunde · ${PERIODS[pi].s}–${PERIODS[pe].e}`);list.appendChild(g);pi=pe}continue}
+    here.forEach(l=>{const c=card(l,delay);delay+=0.04;list.appendChild(c)});
+  }
+}
+function renderLehrerWeek(lessons){
+  const grid=document.getElementById('lhGrid');
+  if(!lessons.length){grid.className='';grid.innerHTML=`<div class="lh-empty"><b>${lehrerSel}</b> hat in dieser Woche keine Stunden im Plan.</div>`;return}
+  grid.className='wgrid';grid.innerHTML='';
+  const days=lehrerDays();const today=new Date();
+  const rowH=SET.fontScale==='small'?60:SET.fontScale==='large'?84:72;
+  const active=new Set();
+  lessons.forEach(l=>{if(!days.some(d=>ymd(d)===l.date))return;periodsOf(l).forEach(pi=>active.add(pi))});
+  let show=PERIODS.map((p,i)=>i);
+  if(active.size){const mx=Math.max(...active);show=show.filter(i=>i<=mx)}else show=show.filter(i=>i<DAY_PERIODS);
+  const rowOf={};show.forEach((pi,idx)=>rowOf[pi]=idx+2);
+  grid.style.gridTemplateColumns='40px repeat(5,1fr)';
+  grid.style.gridTemplateRows=`auto repeat(${show.length},${rowH}px)`;
+  const corner=document.createElement('div');corner.className='wg-corner';corner.style.gridColumn='1';corner.style.gridRow='1';grid.appendChild(corner);
+  days.forEach((d,i)=>{const h=document.createElement('div');h.className='wg-dh'+(sameDay(d,today)?' today':'');h.style.gridColumn=String(i+2);h.style.gridRow='1';h.innerHTML=`<div class="mo">${i===0?MN[d.getMonth()]:''}</div><div class="dd">${d.getDate()}</div><div class="dn">${DN[d.getDay()]}.</div>`;h.onclick=()=>{lhDay=i;setLhView('day')};grid.appendChild(h)});
+  show.forEach(pi=>{const p=PERIODS[pi];const t=document.createElement('div');t.className='wg-tc'+(pi>=DAY_PERIODS?' eve':'');t.style.gridColumn='1';t.style.gridRow=String(rowOf[pi]);t.innerHTML=`<div class="ts">${p.s}</div><div class="tn">${p.n}.</div><div class="te">${p.e}</div>`;grid.appendChild(t)});
+  days.forEach((d,di)=>{
+    const dayL=lessons.filter(l=>l.date===ymd(d));const byStart={};
+    dayL.forEach(l=>{const sp=periodsOf(l);if(!sp.length)return;(byStart[sp[0]]=byStart[sp[0]]||[]).push(l)});
+    Object.keys(byStart).map(Number).forEach(start=>{
+      if(rowOf[start]===undefined)return;
+      const group=byStart[start];let last=start;
+      group.forEach(l=>{const sp=periodsOf(l);last=Math.max(last,sp[sp.length-1])});
+      group.sort((a,b)=>(a.cancelled?1:0)-(b.cancelled?1:0));
+      const endRow=(rowOf[last]!==undefined?rowOf[last]:rowOf[start])+1;
+      const cell=document.createElement('div');cell.className='wcell'+(group.length>1?' split':'');
+      cell.style.gridColumn=String(di+2);cell.style.gridRow=`${rowOf[start]} / ${endRow}`;
+      group.forEach(l=>{
+        const creme=isCreme(l.subject);const chg=(l.roomOrig&&l.roomOrig!==l.room)&&!l.cancelled;
+        const moved=!l.cancelled&&/verleg|verschob/i.test(l.info||'');
+        const cls=l.cancelled?'cancel':l.isExam?'exam':(l.added||l.subjChg||moved)?'added':chg?'subst':creme?'creme':'';
+        const tile=document.createElement('div');tile.className='wtile'+(cls?' '+cls:'');
+        const rm=(l.roomOrig&&!l.cancelled&&l.roomOrig!==l.room)?`${l.room} <s>${l.roomOrig}</s>`:l.room;
+        const hasSubj=!!l.subject;
+        const primary=hasSubj?l.subject:(l.group||'');
+        let h=`<div class="wf">${primary}</div>`;
+        if(l.group&&hasSubj)h+=`<div class="wk">${l.group}</div>`;
+        if(rm)h+=`<div class="wr${chg?' chg':''}">${rm}</div>`;
+        tile.innerHTML=h;tile.style.cursor='pointer';tile.onclick=()=>openLessonDetail(l);cell.appendChild(tile);
+      });
+      grid.appendChild(cell);
+    });
+  });
+}
+
+(function init(){
+  try{CUSTOM_TEACHERS=JSON.parse(store.get('untis_teachers_custom')||'{}')}catch{CUSTOM_TEACHERS={}}
+  try{CUSTOM_ALIAS=JSON.parse(store.get('untis_teacher_alias')||'{}')}catch{CUSTOM_ALIAS={}}
+  loadSet();applyFontScale();
+  const th=store.get('untis_theme')||'dark';document.documentElement.setAttribute('data-theme',th);
+  const ac=store.get('untis_accent');if(ac)document.documentElement.style.setProperty('--orange',ac);
+  const m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',th==='dark'?'#000000':(ac||'#ff6a00'));
+  const saved=store.get('untis_worker');if(saved){WORKER=saved;showScreen('login');tryAutoLogin()}else showScreen('setup')})();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{})})}
+</script>
+</body>
+</html>
